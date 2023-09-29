@@ -5,28 +5,39 @@ using TMPro;
 
 public class Collectables : MonoBehaviour
 {
-    public TextMeshProUGUI P1ScoreText;
-    public int currentScore;
-    public int basicPoints;
+   private GameObject lastPlayer;
+   private int pointValue;
 
     private void Start()
     {
-         P1ScoreText.text = currentScore.ToString();
+        assignPointvalue();
     }
 
-    private void OnTriggerEnter(Collider other)
+  private void assignPointvalue(){
+
+    pointValue += 50;
+  }
+  
+  private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("P1Score"))
-        {
+        string colliderTag = other.GetComponent<Collider>().tag;
 
-            currentScore += basicPoints;
-            P1ScoreText.text = currentScore.ToString();
-            
-            // You can also play a sound or add visual effects here if needed.
+    switch (colliderTag)
+    {
+        case "Player One":
+        case "Player Two":
+        case "Player Three":
+        case "Player Four":
+            Debug.Log("Picked up by " + colliderTag);
+            lastPlayer = other.gameObject;
+            break;
 
-            // Destroy the collectable object if needed
-            Destroy(gameObject);
-        }
+        case "WinZone":
+            Debug.Log("Assign " + pointValue + " to " + lastPlayer.name);
+            break;
     }
+
+    }
+
 }
 

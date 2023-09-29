@@ -9,6 +9,8 @@ TagManager:
   - Player Two
   - P1Score
   - P2Score
+  - Game Manager
+  - WinZone
   layers:
   - Default
   - TransparentFX
