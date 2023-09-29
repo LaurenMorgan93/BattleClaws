@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Player One
+  - Collectable
+  - Player Two
+  - P1Score
+  - P2Score
   layers:
   - Default
   - TransparentFX
