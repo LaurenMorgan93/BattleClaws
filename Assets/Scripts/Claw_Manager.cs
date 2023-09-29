@@ -18,6 +18,7 @@ public class Claw_Manager : MonoBehaviour
     {
         // Find the Object tagged Player One
         playerOneClaw = GameObject.FindGameObjectWithTag("Player One");
+
     }
 
     public void moveClaw()
@@ -71,7 +72,10 @@ private void PlayerGrab()
 }
 
 
-
+public void awardScore(int collectableValue){
+    Debug.Log("Awarding " + collectableValue);
+    
+}
 
 
 private void OnTriggerEnter(Collider other)

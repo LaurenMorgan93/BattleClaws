@@ -7,6 +7,7 @@ public class Collectables : MonoBehaviour
 {
    private GameObject lastPlayer;
    private int pointValue;
+   private Claw_Manager PlayerScript;
 
     private void Start()
     {
@@ -30,10 +31,12 @@ public class Collectables : MonoBehaviour
         case "Player Four":
             Debug.Log("Picked up by " + colliderTag);
             lastPlayer = other.gameObject;
+            PlayerScript = other.gameObject.GetComponent<Claw_Manager>();
             break;
 
         case "WinZone":
             Debug.Log("Assign " + pointValue + " to " + lastPlayer.name);
+            PlayerScript.awardScore(pointValue);
             break;
     }
 
