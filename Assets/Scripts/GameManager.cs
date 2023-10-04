@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+<<<<<<< Updated upstream
     public GameObject playerActivation;
 
     public List<GameObject> packagePrefabs;
@@ -15,23 +16,37 @@ public class GameManager : MonoBehaviour
     private bool playersInit = false;
     
     List<GameObject> isActiveText = new List<GameObject>();
+=======
+    public List<GameObject> packagePrefabs;
+    
+    private bool playersInit = false;
+>>>>>>> Stashed changes
     List<string> activePlayers = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
+<<<<<<< Updated upstream
         playerActivation = Instantiate(playerActivation, new Vector3(0, 0, 0), Quaternion.identity);
         //get all player children
         foreach (Transform child in playerActivation.transform)
         {
             //Debug.Log(child.GameObject());
             isActiveText.Add(child.GameObject());
+=======
+        string incomingPlayers = PlayerPrefs.GetString("Players");
+        foreach (string item in incomingPlayers.Split(","))
+        {
+            activePlayers.Add(item);
+            Debug.Log(item);
+>>>>>>> Stashed changes
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+<<<<<<< Updated upstream
         //pre-game -- call while players have not started
         if (!isAllReady)
         {
@@ -42,11 +57,17 @@ public class GameManager : MonoBehaviour
         if (!playersInit && isAllReady)
         {
             Debug.Log("run");
+=======
+        //initiate game 
+        if (!playersInit)
+        {
+>>>>>>> Stashed changes
             initPlayers();
         }
 
     }
 
+<<<<<<< Updated upstream
     //Pre-game -- Player checking
     private void checkPlayersReady()
     {
@@ -99,6 +120,8 @@ public class GameManager : MonoBehaviour
 
     }
 
+=======
+>>>>>>> Stashed changes
     //Start game -- load up selected players
     private void initPlayers()
     {
@@ -110,8 +133,14 @@ public class GameManager : MonoBehaviour
             //Search for the corresponding prefab
             GameObject currentPlayerPackage = packagePrefabs.Find(x => x.name == packageSearch);
 
+<<<<<<< Updated upstream
             //Instantiate the Player Package prefab
             Instantiate(currentPlayerPackage, new Vector3(0,0,0), Quaternion.identity);
+=======
+            GameObject prefabAnchor = GameObject.FindGameObjectWithTag(players.ToString() + "Anchor");
+            //Instantiate the Player Package prefab
+            Instantiate(currentPlayerPackage, prefabAnchor.transform.position, Quaternion.identity);
+>>>>>>> Stashed changes
         }
         
         playersInit = true;

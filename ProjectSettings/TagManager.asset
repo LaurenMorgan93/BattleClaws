@@ -11,6 +11,11 @@ TagManager:
   - P2Score
   - Game Manager
   - WinZone
+  - Wall
+  - p1Anchor
+  - p2Anchor
+  - p3Anchor
+  - p4Anchor
   layers:
   - Default
   - TransparentFX
