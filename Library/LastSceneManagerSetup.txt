@@ -1,9 +1,5 @@
 sceneSetups:
-<<<<<<< Updated upstream
-- path: Assets/Scenes/Mechanics.unity
-=======
-- path: Assets/Scenes/Player Select.unity
->>>>>>> Stashed changes
+- path: Assets/Scenes/Mechanics_Gameplay.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
