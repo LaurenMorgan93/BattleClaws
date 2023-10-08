@@ -22,7 +22,7 @@ public class Claw_Manager : MonoBehaviour
     public RoundHandler scoreTrackingScript;
     public string playerIdentifier;
 
-    private int points = 0;
+    public int points = 0;
 
     // Start is called before the first frame update
     void Start()

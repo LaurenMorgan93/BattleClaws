@@ -24,6 +24,7 @@ TagManager:
   - p4 Player
   - MysteryBox
   - RoundHandler
+  - GameManager
   layers:
   - Default
   - TransparentFX

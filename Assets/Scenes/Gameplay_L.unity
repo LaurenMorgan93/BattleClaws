@@ -2374,6 +2374,7 @@ MonoBehaviour:
   parentObject: {fileID: 1167580190}
   scoreTrackingScript: {fileID: 0}
   playerIdentifier: p2
+  points: 0
 --- !u!95 &895190101
 Animator:
   serializedVersion: 5
@@ -3286,6 +3287,8 @@ MonoBehaviour:
   EliminationScreen: {fileID: 1929459877}
   DrawIdentifierScreen: {fileID: 232921320}
   EliminateTextBox: {fileID: 1253738598}
+  currentRoundText: {fileID: 621725253}
+  gameManager: {fileID: 1557523676}
 --- !u!1 &1247303371
 GameObject:
   m_ObjectHideFlags: 0
@@ -3690,6 +3693,7 @@ MonoBehaviour:
   parentObject: {fileID: 1092867330}
   scoreTrackingScript: {fileID: 0}
   playerIdentifier: p1
+  points: 0
 --- !u!1 &1377027769
 GameObject:
   m_ObjectHideFlags: 0
@@ -4045,7 +4049,7 @@ GameObject:
   - component: {fileID: 1557523676}
   m_Layer: 0
   m_Name: Game Manager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4123,7 +4127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6352f3cfebcff4cf1bdc53a6ea2dea85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLeftInRound: 20
+  timeLeftInRound: 30
   timerTextObject: {fileID: 1389938371}
   countdownActive: 1
   scoreTrackingScript: {fileID: 1240048209}

@@ -17,6 +17,7 @@ public class PlayerHandover : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        clearPlayerPrefs();
         playerActivation = Instantiate(playerActivation, new Vector3(0, 0, 0), Quaternion.identity);
         //get all player children
         foreach (Transform child in playerActivation.transform)
@@ -25,6 +26,14 @@ public class PlayerHandover : MonoBehaviour
             isActiveText.Add(child.GameObject());
         }
         
+    }
+
+    private void clearPlayerPrefs()
+    {
+        PlayerPrefs.SetString("Players", "");
+        PlayerPrefs.SetString("RemainingPlayers", "");
+        PlayerPrefs.SetInt("CurrentRound", 0);
+        PlayerPrefs.SetInt("TotalRounds", 0);
     }
 
     // Update is called once per frame
@@ -89,6 +98,7 @@ public class PlayerHandover : MonoBehaviour
         {
             Debug.Log("Send!");
             PlayerPrefs.SetString("Players", string.Join( ",", activePlayers));
+            PlayerPrefs.SetString("RemainingPlayers", string.Join( ",", activePlayers));
             isAllReady = true;
             playerActivation.SetActive(false);
             SceneManager.LoadScene("Gameplay_L");

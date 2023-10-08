@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class GameManager : MonoBehaviour
@@ -16,16 +18,21 @@ public class GameManager : MonoBehaviour
 
     private GameObject[] anchors;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        anchors = GameObject.FindGameObjectsWithTag("Drop Anchors");
-        string incomingPlayers = PlayerPrefs.GetString("Players");
+        string incomingPlayers = PlayerPrefs.GetString("RemainingPlayers");
         foreach (string item in incomingPlayers.Split(","))
         {
             activePlayers.Add(item);
             Debug.Log(item);
         }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        anchors = GameObject.FindGameObjectsWithTag("Drop Anchors");
+        
         
         initPlayers();
         initDropZones(false);
@@ -36,6 +43,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public List<String> getActivePlayers()
+    {
+        return activePlayers;
     }
 
     //Start game -- load up selected players
