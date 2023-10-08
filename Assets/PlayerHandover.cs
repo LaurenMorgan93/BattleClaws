@@ -87,6 +87,7 @@ public class PlayerHandover : MonoBehaviour
         //When all players are ready, hit k to continue
         if (Input.GetKey(KeyCode.K) && (activePlayers.Count > 1))
         {
+            Debug.Log("Send!");
             PlayerPrefs.SetString("Players", string.Join( ",", activePlayers));
             isAllReady = true;
             playerActivation.SetActive(false);

@@ -9,6 +9,8 @@ public class Collectables : MonoBehaviour
    private int pointValue;
    private Claw_Manager PlayerScript;
 
+   public string type;
+
     private void Start()
     {
         assignPointvalue();
@@ -41,6 +43,11 @@ public class Collectables : MonoBehaviour
     }
 
     }
+
+  public void setValue(int value)
+  {
+      pointValue = value;
+  }
 
 }
 
