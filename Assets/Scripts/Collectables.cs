@@ -5,21 +5,22 @@ using TMPro;
 
 public class Collectables : MonoBehaviour
 {
-   private GameObject lastPlayer;
-   private int pointValue;
-   private Claw_Manager PlayerScript;
+    private GameObject lastPlayer;
+    private int pointValue;
+    private Claw_Manager PlayerScript;
+    public RoundHandler scoreTrackingScript;
 
-   public string type;
-
-    private void Start()
+    public void Start()
     {
         assignPointvalue();
     }
 
-  private void assignPointvalue(){
+    private void assignPointvalue()
+    {
+        //Debug.Log("Assign a random value to the collectable object");
+        pointValue += Random.Range(50, 250);
+    }
 
-    pointValue += 50;
-  }
   
   private void OnTriggerEnter(Collider other)
     {
@@ -27,27 +28,27 @@ public class Collectables : MonoBehaviour
 
     switch (colliderTag)
     {
-        case "Player One":
-        case "Player Two":
-        case "Player Three":
-        case "Player Four":
+        case "p1 Player":
+        case "p2 Player":
+        case "p3 Player":
+        case "p4 Player":
             Debug.Log("Picked up by " + colliderTag);
             lastPlayer = other.gameObject;
             PlayerScript = other.gameObject.GetComponent<Claw_Manager>();
             break;
 
         case "WinZone":
-            Debug.Log("Assign " + pointValue + " to " + lastPlayer.name);
-            PlayerScript.awardScore(pointValue);
+            if (lastPlayer == null)
+            {
+                break;
+            }
+
+            lastPlayer.GetComponent<Claw_Manager>().addPoints(pointValue);
+            Debug.Log(lastPlayer.name + " gained " +pointValue + " points!");
+            Destroy(gameObject);
             break;
-    }
+        }
 
     }
-
-  public void setValue(int value)
-  {
-      pointValue = value;
-  }
 
 }
-

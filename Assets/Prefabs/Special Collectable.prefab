@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 2508188366763066363}
   - component: {fileID: 8654171452963349462}
   - component: {fileID: 8804503117329106314}
-  - component: {fileID: 7660548731446352055}
+  - component: {fileID: 3669200469404712931}
   m_Layer: 0
   m_Name: Special Collectable
-  m_TagString: Collectable
+  m_TagString: MysteryBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7660548731446352055
+--- !u!114 &3669200469404712931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,7 +124,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 812378604407132998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f247d6648043449b386cbe46b779c069, type: 3}
+  m_Script: {fileID: 11500000, guid: 768737485364344278acccf19c916cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: Special
+  speedBuffAmount: 100
+  speedDebuffAmount: 25
+  frozenSpeed: 0
+  PlayerManagerScript: {fileID: 0}
