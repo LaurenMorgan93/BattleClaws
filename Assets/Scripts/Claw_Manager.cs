@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,8 +20,11 @@ public class Claw_Manager : MonoBehaviour
     private Animator playerOneAnim;
     private bool isSpeedBuffed;    
     private bool objectGrabbed = false;
+    private GameObject heldObject;
     public RoundHandler scoreTrackingScript;
     public string playerIdentifier;
+
+    private TMP_Text scoreUI;
 
     public int points = 0;
 
@@ -28,10 +32,9 @@ public class Claw_Manager : MonoBehaviour
     void Start()
     {
         // Find the Object tagged Player 
-        playerOneClaw = GameObject.FindGameObjectWithTag("p1 Player");
-        //playerTwoClaw = GameObject.FindGameObjectWithTag("Player Two");
-        //playerThreeClaw = GameObject.FindGameObjectWithTag("Player Three");
-        //playerFourClaw = GameObject.FindGameObjectWithTag("Player Four");
+        playerOneClaw = gameObject;
+        scoreUI = GameObject.FindGameObjectWithTag((playerIdentifier + " Score")).GetComponent<TMP_Text>();
+        scoreUI.text = "000000";
         
         scoreTrackingScript = GameObject.FindGameObjectWithTag("RoundHandler").GetComponent<RoundHandler>();
     }
@@ -95,6 +98,12 @@ public class Claw_Manager : MonoBehaviour
                 {
                     Destroy(joint);
                 }
+
+                if (heldObject)
+                {
+                    heldObject.GetComponent<SpecialCollectable>().setHeld(false);
+                }
+
                 objectGrabbed = false;
             }
         }
@@ -115,8 +124,11 @@ public class Claw_Manager : MonoBehaviour
                 // If no FixedJoint exists, add one.
                 FixedJoint grabbingJoint = gameObject.AddComponent<FixedJoint>();
                 grabbingJoint.connectedBody = other.gameObject.GetComponent<Rigidbody>();
+                grabbingJoint.anchor = new Vector3(0, -2, 0);
                 grabCooldown = 100;
                 objectGrabbed = true;
+
+                heldObject = other.gameObject;
             }
         }
 
@@ -164,7 +176,9 @@ public class Claw_Manager : MonoBehaviour
 
         public void addPoints(int value)
         {
+            Debug.Log("Added " + value + "Points!");
             points += value;
+            scoreUI.text = points.ToString().PadLeft(6, '0');
         }
 
         public int getPoints()

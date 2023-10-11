@@ -102,6 +102,7 @@ public class PlayerHandover : MonoBehaviour
             isAllReady = true;
             playerActivation.SetActive(false);
             SceneManager.LoadScene("Gameplay_L");
+            PlayerPrefs.SetString("isDraw", "false");
         }
     }
 }

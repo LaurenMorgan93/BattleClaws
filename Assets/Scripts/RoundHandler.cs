@@ -18,9 +18,10 @@ public class RoundHandler : MonoBehaviour
     public TextMeshProUGUI EliminateTextBox;
     private int totalRounds;
     private int currentRound = 0;
+    private bool isDrawRound = false;
     public TMP_Text currentRoundText;
     public GameManager gameManager;
-    
+    public DrawGameManager DrawGameManager;
 
     public void Start()
     {
@@ -40,6 +41,13 @@ public class RoundHandler : MonoBehaviour
 
     private void updateRoundValues()
     {
+        if (PlayerPrefs.GetString("isDraw") == "true")
+        {
+            isDrawRound = true;
+            currentRoundText.text = "Bonus Round!";
+            return;
+        }
+
         if (PlayerPrefs.GetInt("TotalRounds") != 0)
         {
             totalRounds = PlayerPrefs.GetInt("TotalRounds");
@@ -158,10 +166,21 @@ public class RoundHandler : MonoBehaviour
             EliminateTextBox.text = (playerWithLowestScore + " Is The Lowest Scorer this round! Total Points: " +
                                      GetPointsForPlayer(playerWithLowestScore));
             EliminationScreen.SetActive(true);
-            var currentPlayers = gameManager.getActivePlayers();
-            currentPlayers.Remove(playerWithLowestScore);
-            PlayerPrefs.SetString("RemainingPlayers",  string.Join( ",", currentPlayers));
-            Debug.Log(string.Join( ",", currentPlayers));
+            
+            if (isDrawRound)
+            {
+                var currentPlayers = DrawGameManager.getActivePlayers();
+                currentPlayers.Remove(playerWithLowestScore);
+                PlayerPrefs.SetString("RemainingPlayers",  string.Join( ",", currentPlayers));
+                Debug.Log(string.Join( ",", currentPlayers));
+            }
+            else
+            {
+                var currentPlayers = gameManager.getActivePlayers();
+                currentPlayers.Remove(playerWithLowestScore);
+                PlayerPrefs.SetString("RemainingPlayers",  string.Join( ",", currentPlayers));
+                Debug.Log(string.Join( ",", currentPlayers));
+            }
 
             // Return the player tag with the lowest score.
             return playerWithLowestScore;
