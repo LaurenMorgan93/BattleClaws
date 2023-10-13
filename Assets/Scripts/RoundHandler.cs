@@ -18,10 +18,14 @@ public class RoundHandler : MonoBehaviour
     public TextMeshProUGUI EliminateTextBox;
     private int totalRounds;
     private int currentRound = 0;
-    private bool isDrawRound = false;
+    public bool isDrawRound = false;
+    private bool roundIsDraw = false;
     public TMP_Text currentRoundText;
     public GameManager gameManager;
     public DrawGameManager DrawGameManager;
+    
+    public TextMeshProUGUI DrawTextBox;
+    public Animator roundScreenAnim;
 
     public void Start()
     {
@@ -33,9 +37,13 @@ public class RoundHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.K) && hasRoundEnded)
+        if (Input.anyKey && hasRoundEnded && !roundIsDraw)
         {
             SceneManager.LoadScene("Gameplay_L");
+        }
+        else if (Input.anyKey && hasRoundEnded && roundIsDraw)
+        {
+            SceneManager.LoadScene("Gameplay_Draw");
         }
     }
 
@@ -64,6 +72,7 @@ public class RoundHandler : MonoBehaviour
         }
         else
         {
+            Debug.Log("Increment Round! " + currentRound);
             currentRound++;
         }
 
@@ -80,11 +89,12 @@ public class RoundHandler : MonoBehaviour
 
     public void getFinalScores()
     {
-        List<string> activePlayers = PlayerPrefs.GetString("Players").Split(',').ToList();
-
-
+        Debug.Log("Final Scores Reached!");
+        List<string> activePlayers = PlayerPrefs.GetString("RemainingPlayers").Split(',').ToList();
+        
         foreach (string player in activePlayers)
         {
+            Debug.Log(player);
             GameObject currentPlayer = GameObject.FindGameObjectWithTag(player + " Player");
             int score = currentPlayer.GetComponent<Claw_Manager>().getPoints();
             playerPoints[player] = score;
@@ -123,6 +133,7 @@ public class RoundHandler : MonoBehaviour
 
     public string CompareScores()
     {
+        Debug.Log("Compare Scores Reached!");
         getFinalScores();
         // Initialize variables to keep track of the lowest score and the respective player.
         int lowestScore = int.MaxValue; // Initialize with a value higher than the possible scores.
@@ -149,23 +160,25 @@ public class RoundHandler : MonoBehaviour
             {
                 // Add the player to the list of players with identical lowest scores.
                 playersWithIdenticalLowestScores.Add(playerTag);
+                
+                PlayerPrefs.SetString("DrawingPlayers", string.Join(",", playersWithIdenticalLowestScores));
+                PlayerPrefs.SetString("isDraw", "true");
             }
         }
 
         // Check if there are players with identical lowest scores.
         if (playersWithIdenticalLowestScores.Count > 1)
         {
-            // Handle the case when there are players with identical lowest scores.
-            DrawIdentifierScreen.SetActive(true);
-
+            Debug.Log("Draw logic Reached!");
+            roundIsDraw = true;
+            DrawTextBox.text = playersWithIdenticalLowestScores[0] + " VS " + playersWithIdenticalLowestScores[1];
             return "Tie among players: " + string.Join(", ", playersWithIdenticalLowestScores);
         }
         else
         {
+            Debug.Log("standard Scores Reached!" + playerWithLowestScore);
             // Display text for the player with the lowest score.
-            EliminateTextBox.text = (playerWithLowestScore + " Is The Lowest Scorer this round! Total Points: " +
-                                     GetPointsForPlayer(playerWithLowestScore));
-            EliminationScreen.SetActive(true);
+            EliminateTextBox.text = (playerWithLowestScore.ToUpper() + "<br>" + GetPointsForPlayer(playerWithLowestScore).ToString().PadLeft(6, '0'));
             
             if (isDrawRound)
             {
@@ -192,12 +205,40 @@ public class RoundHandler : MonoBehaviour
         if (!hasRoundEnded)
         {
             CompareScores();
-            hasRoundEnded = true;
-            pushRoundData();
-
+            EliminateLoser();
             
+
+            if (roundIsDraw)
+            {
+                declareDraw();
+            }
+            pushRoundData();
+            hasRoundEnded = true;
+
         }
     }
+    
+    public void declareDraw()
+    {
+        Debug.Log("draw logic reached");
+        DrawIdentifierScreen.SetActive(true);
+        roundScreenAnim.SetTrigger("Draw");
+    }
+    public void EliminateLoser()
+    {
+        string playerWithLowestScore = CompareScores(); // Get the player with the lowest score.
+        // Check if there's only one player with the lowest score and remove them.
+        if (playerWithLowestScore != "" && !roundIsDraw)
+        {
+            EliminationScreen.SetActive(true);
+            roundScreenAnim.SetTrigger("Elim");
+            List<string> activePlayers = PlayerPrefs.GetString("RemainingPlayers").Split(',').ToList();
+            activePlayers.Remove(playerWithLowestScore);
+            PlayerPrefs.SetString("RemainingPlayers", string.Join(",", activePlayers)); // Update PlayerPrefs with the modified active players list.
+        }
+    }
+
+
 
     private void pushRoundData()
     {
@@ -208,6 +249,6 @@ public class RoundHandler : MonoBehaviour
 
     public void loadBonusRound()
     {
-        SceneManager.LoadScene("tieBreaker");
+        SceneManager.LoadScene("Gameplay_Draw");
     }
 }
