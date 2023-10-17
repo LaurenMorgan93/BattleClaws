@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
+    public AudioHandler audioPlayingScript;
     public string destinationScene; // choose the scene to load in the inspector
 
     // Start is called before the first frame update
@@ -12,6 +13,7 @@ public class SceneChanger : MonoBehaviour
     {
         // Get the name of the current scene
         currentSceneName = SceneManager.GetActiveScene().name;
+        audioPlayingScript = FindObjectOfType<AudioHandler>();
     }
 
     // Update is called once per frame
@@ -20,16 +22,27 @@ public class SceneChanger : MonoBehaviour
         
         if (Input.anyKey)
         {
-            LoadDestinationScene();
+            LoadDestinationSceneWithDelay();
         }
     }
 
     private string currentSceneName;
 
-    public void LoadDestinationScene()
+ public void LoadDestinationSceneWithDelay()
     {
+        StartCoroutine(WaitAndLoadScene());
+    }
+
+    private IEnumerator WaitAndLoadScene()
+    {
+     audioPlayingScript.PlaySoundEffect("Start"); 
+        // Wait for 5 seconds.
+        yield return new WaitForSeconds(5.0f);
+
+        // Load the destination scene.
         SceneManager.LoadScene(destinationScene);
     }
+
 }
 
 
