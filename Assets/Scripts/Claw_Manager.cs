@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,27 +13,34 @@ public class Claw_Manager : MonoBehaviour
     public bool doublePointsBuffActive;
     public GameObject parentObject;
     private GameObject playerOneClaw;
-    private GameObject playerTwoClaw;
-    private GameObject playerThreeClaw;
-    private GameObject playerFourClaw;
     private GameObject CollectableObject;
     private int defaultSpeed = 50;
     private Animator playerOneAnim;
     private bool isSpeedBuffed;    
     private bool objectGrabbed = false;
+    private GameObject heldObject;
     public RoundHandler scoreTrackingScript;
     public string playerIdentifier;
 
-    private int points = 0;
+    public string dropKey;
+
+    private TMP_Text scoreUI;
+
+    public int points = 0;
+    
+    // Define the boundaries for player movement
+    private float minX = -150f; // Set your minimum X position
+    private float maxX = 140f;  // Set your maximum X position
+    private float minZ = -60f; // Set your minimum Z position
+    private float maxZ = 235f;  // Set your maximum Z position
 
     // Start is called before the first frame update
     void Start()
     {
         // Find the Object tagged Player 
-        playerOneClaw = GameObject.FindGameObjectWithTag("p1 Player");
-        //playerTwoClaw = GameObject.FindGameObjectWithTag("Player Two");
-        //playerThreeClaw = GameObject.FindGameObjectWithTag("Player Three");
-        //playerFourClaw = GameObject.FindGameObjectWithTag("Player Four");
+        playerOneClaw = gameObject;
+        scoreUI = GameObject.FindGameObjectWithTag((playerIdentifier + " Score")).GetComponent<TMP_Text>();
+        scoreUI.text = "000000";
         
         scoreTrackingScript = GameObject.FindGameObjectWithTag("RoundHandler").GetComponent<RoundHandler>();
     }
@@ -43,8 +52,13 @@ public class Claw_Manager : MonoBehaviour
         float Xmovement = Input.GetAxis("Hor_" + playerIdentifier);
         float Ymovement = Input.GetAxis("Vert_" + playerIdentifier);
         Vector3 movement = new Vector3(Xmovement, 0, Ymovement);
-        //movement.Normalize();
+        // Clamp the player's position within the boundaries
         parentObject.transform.Translate(movement * clawMoveSpeed * Time.deltaTime);
+        Vector3 newPosition = parentObject.transform.position + movement * clawMoveSpeed * Time.deltaTime;
+        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+        newPosition.z = Mathf.Clamp(newPosition.z, minZ, maxZ);
+        // Update the player's position
+        parentObject.transform.position = newPosition;
     }
 
     // Update is called once per frame
@@ -77,8 +91,8 @@ public class Claw_Manager : MonoBehaviour
 
     private void PlayerGrab()
     {
-        // If the player presses G, run the animation that makes the Claw drop down.
-        if (Input.GetKeyDown(KeyCode.G))
+        // If the player presses dG, run the animation that makes the Claw drop down.
+        if (Input.GetKeyDown((KeyCode)Enum.Parse(typeof(KeyCode), dropKey)))
         {
             if (!objectGrabbed && grabCooldown == 0)
             {
@@ -95,6 +109,12 @@ public class Claw_Manager : MonoBehaviour
                 {
                     Destroy(joint);
                 }
+
+                if (heldObject && scoreTrackingScript.isDrawRound == true)
+                {
+                    heldObject.GetComponent<SpecialCollectable>().setHeld(false);
+                }
+
                 objectGrabbed = false;
             }
         }
@@ -115,8 +135,11 @@ public class Claw_Manager : MonoBehaviour
                 // If no FixedJoint exists, add one.
                 FixedJoint grabbingJoint = gameObject.AddComponent<FixedJoint>();
                 grabbingJoint.connectedBody = other.gameObject.GetComponent<Rigidbody>();
+                grabbingJoint.anchor = new Vector3(0, -2, 0);
                 grabCooldown = 100;
                 objectGrabbed = true;
+
+                heldObject = other.gameObject;
             }
         }
 
@@ -137,7 +160,7 @@ public class Claw_Manager : MonoBehaviour
         }
 
 
-        if(other.gameObject.tag == "Player Two")
+        if(other.gameObject.tag.EndsWith("Player"))
              
             {
                 Debug.Log("Collided with another claw!");
@@ -148,7 +171,7 @@ public class Claw_Manager : MonoBehaviour
                 Destroy(gameObject.GetComponent<FixedJoint>());
             }
 
-         if(other.gameObject.tag == ("Wall"))
+         if(other.gameObject.CompareTag("Wall"))
             {
                 Destroy(gameObject.GetComponent<FixedJoint>());
             }
@@ -164,7 +187,9 @@ public class Claw_Manager : MonoBehaviour
 
         public void addPoints(int value)
         {
+            Debug.Log("Added " + value + "Points!");
             points += value;
+            scoreUI.text = points.ToString().PadLeft(6, '0');
         }
 
         public int getPoints()

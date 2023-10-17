@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class GameManager : MonoBehaviour
@@ -10,23 +12,30 @@ public class GameManager : MonoBehaviour
     public List<GameObject> dropZonePrefabs;
     public List<GameObject> collectablesPrefabs;
     public List<GameObject> powerUpsPrefabs;
+
+    public List<GameObject> UIPanels;
     
     
     List<string> activePlayers = new List<string>();
 
     private GameObject[] anchors;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        anchors = GameObject.FindGameObjectsWithTag("Drop Anchors");
-        string incomingPlayers = PlayerPrefs.GetString("Players");
+        string incomingPlayers = PlayerPrefs.GetString("RemainingPlayers");
         foreach (string item in incomingPlayers.Split(","))
         {
             activePlayers.Add(item);
             Debug.Log(item);
         }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        anchors = GameObject.FindGameObjectsWithTag("Drop Anchors");
         
+        initPanels();
         initPlayers();
         initDropZones(false);
         initCollectables(80);
@@ -35,7 +44,40 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        string[] joystickNames = Input.GetJoystickNames();
 
+        for (int i = 0; i < joystickNames.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(joystickNames[i]))
+            {
+                Debug.Log("Controller detected: " + joystickNames[i]);
+                LogJoystickInput(i);
+            }
+        }
+    }
+
+    private void LogJoystickInput(int joystickIndex)
+    {
+        float horizontalAxis = Input.GetAxis("Hor_p" + (joystickIndex+1));
+        float verticalAxis = Input.GetAxis("Vert_p" + (joystickIndex+1));
+
+        Debug.Log($"Joystick {joystickIndex} - Horizontal: {horizontalAxis}, Vertical: {verticalAxis}");
+    }
+
+    public void initPanels()
+    {
+        foreach (GameObject panel in UIPanels)
+        {
+            if (activePlayers.Contains(panel.name.Split(" ")[0]))
+            {
+                panel.SetActive(true);
+            }
+        }
+    }
+
+    public List<String> getActivePlayers()
+    {
+        return activePlayers;
     }
 
     //Start game -- load up selected players

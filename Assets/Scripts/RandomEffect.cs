@@ -14,7 +14,7 @@ public class RandomEffect : MonoBehaviour
     private int pointsValue;
     private bool isSpeedBuffed;
     private string grabbingPlayerString;
-    private string[] randomEffects = { "TimeLoss", "SpeedBoost", "SlowPlayers", "FreezePlayers", "DoublePoints" };
+    private string[] randomEffects = { "TimeLoss", "SpeedBoost", "SlowPlayers", "FreezePlayers", "DoublePoints", "ShuffleZones" };
 
 
     public void assignRandomEffect()
@@ -62,9 +62,13 @@ public class RandomEffect : MonoBehaviour
              PlayerManagerScript.buffCooldown = 10;
             Destroy(gameObject);
              break;
+            
+            case "ShuffleZones":
+                GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+                gameManager.initDropZones(true);
+                Destroy(gameObject);
+                break;
         }
-
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -73,23 +77,22 @@ public class RandomEffect : MonoBehaviour
 
     switch (collidersTag)
     {
-        case "Player One":
-        case "Player Two":
-        case "Player Three":
-        case "Player Four":
-            //Debug.Log("Picked up by " + collidersTag);
-            lastPlayerGrab = other.gameObject;
-            grabbingPlayerString = collidersTag;
-            PlayerManagerScript = other.gameObject.GetComponent<Claw_Manager>();
-            break;
-
         case "WinZone":
+            if (lastPlayerGrab == null)
+            {
+                break;
+            }
+
             //Debug.Log("Assign " + pointsValue + " to " + lastPlayerToGrab.name);
             assignRandomEffect();
             //PlayerManagerScript.awardScore(pointsValue);
             gameObject.SetActive(false);
-            
-        break;
+            break;
+        default:
+            lastPlayerGrab = other.gameObject;
+            grabbingPlayerString = collidersTag;
+            PlayerManagerScript = other.gameObject.GetComponent<Claw_Manager>();
+            break;
     }
 
     }

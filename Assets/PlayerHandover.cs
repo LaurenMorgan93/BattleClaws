@@ -88,10 +88,15 @@ public class PlayerHandover : MonoBehaviour
         if (Input.GetKey(KeyCode.K) && (activePlayers.Count >= 1))
         {
             Debug.Log("Send!");
+            PlayerPrefs.SetInt("CurrentRound", 0);
+            PlayerPrefs.SetInt("TotalRounds", 0);
+            PlayerPrefs.SetString("DrawingPlayers", "");
             PlayerPrefs.SetString("Players", string.Join( ",", activePlayers));
+            PlayerPrefs.SetString("RemainingPlayers", string.Join( ",", activePlayers));
             isAllReady = true;
             playerActivation.SetActive(false);
             SceneManager.LoadScene("Gameplay_L");
+            PlayerPrefs.SetString("isDraw", "false");
         }
     }
 }
