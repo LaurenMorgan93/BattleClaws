@@ -39,6 +39,7 @@ public class RoundHandler : MonoBehaviour
     {
         if (Input.anyKey && hasRoundEnded && !roundIsDraw)
         {
+            PlayerPrefs.SetString("isDraw", "false");
             SceneManager.LoadScene("Gameplay_L");
         }
         else if (Input.anyKey && hasRoundEnded && roundIsDraw)
@@ -80,6 +81,7 @@ public class RoundHandler : MonoBehaviour
         {
             //Go to end game logic
             Debug.Log("End Game Here");
+            SceneManager.LoadScene("End Screen");
         }
 
         Debug.Log("Round Stats:");
@@ -90,8 +92,16 @@ public class RoundHandler : MonoBehaviour
     public void getFinalScores()
     {
         Debug.Log("Final Scores Reached!");
-        List<string> activePlayers = PlayerPrefs.GetString("RemainingPlayers").Split(',').ToList();
-        
+        List<string> activePlayers;
+        if (isDrawRound)
+        {
+            activePlayers = PlayerPrefs.GetString("DrawingPlayers").Split(',').ToList();
+        }
+        else
+        {
+            activePlayers = PlayerPrefs.GetString("RemainingPlayers").Split(',').ToList();
+        }
+
         foreach (string player in activePlayers)
         {
             Debug.Log(player);

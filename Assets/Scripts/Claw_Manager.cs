@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,9 +13,6 @@ public class Claw_Manager : MonoBehaviour
     public bool doublePointsBuffActive;
     public GameObject parentObject;
     private GameObject playerOneClaw;
-    private GameObject playerTwoClaw;
-    private GameObject playerThreeClaw;
-    private GameObject playerFourClaw;
     private GameObject CollectableObject;
     private int defaultSpeed = 50;
     private Animator playerOneAnim;
@@ -23,6 +21,8 @@ public class Claw_Manager : MonoBehaviour
     private GameObject heldObject;
     public RoundHandler scoreTrackingScript;
     public string playerIdentifier;
+
+    public string dropKey;
 
     private TMP_Text scoreUI;
 
@@ -91,8 +91,8 @@ public class Claw_Manager : MonoBehaviour
 
     private void PlayerGrab()
     {
-        // If the player presses G, run the animation that makes the Claw drop down.
-        if (Input.GetKeyDown(KeyCode.G))
+        // If the player presses dG, run the animation that makes the Claw drop down.
+        if (Input.GetKeyDown((KeyCode)Enum.Parse(typeof(KeyCode), dropKey)))
         {
             if (!objectGrabbed && grabCooldown == 0)
             {
@@ -160,7 +160,7 @@ public class Claw_Manager : MonoBehaviour
         }
 
 
-        if(other.gameObject.tag == "Player Two")
+        if(other.gameObject.tag.EndsWith("Player"))
              
             {
                 Debug.Log("Collided with another claw!");
@@ -171,7 +171,7 @@ public class Claw_Manager : MonoBehaviour
                 Destroy(gameObject.GetComponent<FixedJoint>());
             }
 
-         if(other.gameObject.tag == ("Wall"))
+         if(other.gameObject.CompareTag("Wall"))
             {
                 Destroy(gameObject.GetComponent<FixedJoint>());
             }

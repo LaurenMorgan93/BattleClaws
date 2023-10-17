@@ -28,10 +28,7 @@ public class Collectables : MonoBehaviour
 
     switch (colliderTag)
     {
-        case "p1 Player":
-        case "p2 Player":
-        case "p3 Player":
-        case "p4 Player":
+        default:
             Debug.Log("Picked up by " + colliderTag);
             lastPlayer = other.gameObject;
             PlayerScript = other.gameObject.GetComponent<Claw_Manager>();
@@ -43,11 +40,13 @@ public class Collectables : MonoBehaviour
                 break;
             }
 
-            lastPlayer.GetComponent<Claw_Manager>().addPoints(pointValue);
-            Debug.Log(lastPlayer.name + " gained " +pointValue + " points!");
-            Destroy(gameObject);
+            if (other.gameObject.transform.parent.gameObject.name.Split(" ")[0] == gameObject.name.Split(" ")[0]){
+                lastPlayer.GetComponent<Claw_Manager>().addPoints(pointValue);
+                Debug.Log(lastPlayer.name + " gained " + pointValue + " points!");
+                Destroy(gameObject);
+            }
             break;
-        }
+    }
 
     }
 

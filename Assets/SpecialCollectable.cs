@@ -22,6 +22,11 @@ public class SpecialCollectable : MonoBehaviour
         {
             holdingPlayer.GetComponent<Claw_Manager>().addPoints(Mathf.RoundToInt(Time.deltaTime * 1000));
         }
+
+        if (transform.position.y < -6)
+        {
+            isHeld = false;
+        }
     }
 
     public void setHeld(bool isHeld)

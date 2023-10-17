@@ -296,3 +296,5 @@ MonoBehaviour:
   parentObject: {fileID: 3335268061827105648}
   scoreTrackingScript: {fileID: 0}
   playerIdentifier: p1
+  dropKey: E
+  points: 0

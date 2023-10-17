@@ -4124,7 +4124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6352f3cfebcff4cf1bdc53a6ea2dea85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLeftInRound: 20
+  timeLeftInRound: 60
   timerTextObject: {fileID: 724089607}
   countdownActive: 1
   scoreTrackingScript: {fileID: 1240048209}
