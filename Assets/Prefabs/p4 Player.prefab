@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 6732874821481047943}
   m_Layer: 0
   m_Name: p4 Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -282,3 +282,4 @@ MonoBehaviour:
   parentObject: {fileID: 7148028614889820128}
   scoreTrackingScript: {fileID: 0}
   playerIdentifier: p4
+  points: 0

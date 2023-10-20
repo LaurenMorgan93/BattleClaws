@@ -41,28 +41,6 @@ public class GameManager : MonoBehaviour
         initCollectables(80);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        string[] joystickNames = Input.GetJoystickNames();
-
-        for (int i = 0; i < joystickNames.Length; i++)
-        {
-            if (!string.IsNullOrEmpty(joystickNames[i]))
-            {
-                Debug.Log("Controller detected: " + joystickNames[i]);
-                LogJoystickInput(i);
-            }
-        }
-    }
-
-    private void LogJoystickInput(int joystickIndex)
-    {
-        float horizontalAxis = Input.GetAxis("Hor_p" + (joystickIndex+1));
-        float verticalAxis = Input.GetAxis("Vert_p" + (joystickIndex+1));
-
-        Debug.Log($"Joystick {joystickIndex} - Horizontal: {horizontalAxis}, Vertical: {verticalAxis}");
-    }
 
     public void initPanels()
     {

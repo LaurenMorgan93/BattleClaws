@@ -22,7 +22,7 @@ public class DrawGameManager : MonoBehaviour
 
     private void Awake()
     {
-        string incomingPlayers = PlayerPrefs.GetString("RemainingPlayers");
+        string incomingPlayers = PlayerPrefs.GetString("DrawingPlayers");
         foreach (string item in incomingPlayers.Split(","))
         {
             activePlayers.Add(item);

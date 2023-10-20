@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 882236756382242001}
   m_Layer: 0
   m_Name: p2 Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,7 +188,6 @@ MonoBehaviour:
   parentObject: {fileID: 1968366345167812447}
   scoreTrackingScript: {fileID: 0}
   playerIdentifier: p2
-  dropKey: L
   points: 0
 --- !u!1 &6501232661374387861
 GameObject:
