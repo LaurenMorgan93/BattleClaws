@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276797, g: 0.21589167, b: 0.29782546, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589245, b: 0.2978263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -217,7 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e3089e3dccc4302abfe0392a7b542c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonusRoundScoreHandlerScript: {fileID: 0}
 --- !u!1 &66206806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,6 +1568,7 @@ MonoBehaviour:
   - {fileID: 3521152658628476098, guid: 82a46f6d2b5729843925d5a0bc2098ad, type: 3}
   powerUpsPrefabs:
   - {fileID: 812378604407132998, guid: 42dfc2a2607a51e4bb2215a54be8fe23, type: 3}
+  UIPanels: []
 --- !u!4 &936004656
 Transform:
   m_ObjectHideFlags: 0
@@ -2283,6 +2283,12 @@ MonoBehaviour:
   EliminationScreen: {fileID: 485564822}
   DrawIdentifierScreen: {fileID: 557234108}
   EliminateTextBox: {fileID: 522850686}
+  isDrawRound: 0
+  currentRoundText: {fileID: 0}
+  gameManager: {fileID: 0}
+  DrawGameManager: {fileID: 0}
+  DrawTextBox: {fileID: 0}
+  roundScreenAnim: {fileID: 0}
 --- !u!4 &1326227894
 Transform:
   m_ObjectHideFlags: 0
@@ -3231,7 +3237,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bb3b7075a3a034154bf64a5d4fc9804b, type: 2}
+  - {fileID: 2100000, guid: e8568f7da165a874d899f3ec126eedd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3268,14 +3274,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096863090}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -2.3, y: -15, z: 84.6}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &2126982518
 GameObject:
   m_ObjectHideFlags: 0

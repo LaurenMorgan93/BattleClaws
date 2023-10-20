@@ -192,7 +192,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e6c037779d4aa54b8beed4581819b72, type: 2}
+  - {fileID: 2100000, guid: f4fdafc3afc844fd7a4264d6f800712f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -282,3 +282,5 @@ MonoBehaviour:
   parentObject: {fileID: 7148028614889820128}
   scoreTrackingScript: {fileID: 0}
   playerIdentifier: p4
+  dropKey: 
+  points: 0
