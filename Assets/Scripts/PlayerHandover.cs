@@ -8,15 +8,17 @@ using UnityEngine.UI;
 public class PlayerHandover : MonoBehaviour
 {
     public GameObject playerActivation;
-    
+    public AudioHandler audioPlayingScript;
+    public bool ReadyToStart = false;
     List<GameObject> isActiveText = new List<GameObject>();
-    List<string> activePlayers = new List<string>();
+   public List<string> activePlayers = new List<string>();
 
     
     private bool isAllReady = false;
     // Start is called before the first frame update
     void Start()
     {
+        audioPlayingScript = FindObjectOfType<AudioHandler>();
         playerActivation = Instantiate(playerActivation, new Vector3(0, 0, 0), Quaternion.identity);
         //get all player children
         foreach (Transform child in playerActivation.transform)
@@ -40,8 +42,9 @@ public class PlayerHandover : MonoBehaviour
     private void checkPlayersReady()
     {
         //Activate corrisponding player based upon which key is pressed
-        if (Input.GetKey(KeyCode.U)&& (activePlayers.IndexOf("p1") == -1))
+        if (Input.GetKey("joystick 1 button 0")&& (activePlayers.IndexOf("p1") == -1))
         {
+            audioPlayingScript.PlaySoundEffect("Start");
             //Find the p1 Gameobject in the array
             GameObject p1 = isActiveText.Find(x => x.name == "Player 1");
             //Set the player to active and add to active players list
@@ -50,22 +53,25 @@ public class PlayerHandover : MonoBehaviour
         }
         
         //Just copied from the p1 logic
-        if (Input.GetKey(KeyCode.I) && (activePlayers.IndexOf("p2") == -1))
+        if (Input.GetKey("joystick 2 button 0") && (activePlayers.IndexOf("p2") == -1))
         {
+            audioPlayingScript.PlaySoundEffect("Start");
             GameObject p1 = isActiveText.Find(x => x.name == "Player 2");
             p1.GetComponentInChildren<Outline>().enabled = true;
             activePlayers.Add("p2");
         }
         
-        if (Input.GetKey(KeyCode.O)&& (activePlayers.IndexOf("p3") == -1))
+        if (Input.GetKey("joystick 3 button 0")&& (activePlayers.IndexOf("p3") == -1))
         {
+            audioPlayingScript.PlaySoundEffect("Start");
             GameObject p1 = isActiveText.Find(x => x.name == "Player 3");
             p1.GetComponentInChildren<Outline>().enabled = true;
             activePlayers.Add("p3");
         }
         
-        if (Input.GetKey(KeyCode.P)&& (activePlayers.IndexOf("p4") == -1))
+        if (Input.GetKey("joystick 4 button 0")&& (activePlayers.IndexOf("p4") == -1))
         {
+            audioPlayingScript.PlaySoundEffect("Start");
             GameObject p1 = isActiveText.Find(x => x.name == "Player 4");
             p1.GetComponentInChildren<Outline>().enabled = true;
             activePlayers.Add("p4");
@@ -80,14 +86,15 @@ public class PlayerHandover : MonoBehaviour
         }
         else
         {
-            continueButton.GetComponentInChildren<TMP_Text>().text = "Press B on any controller to continue!";
+            continueButton.GetComponentInChildren<TMP_Text>().text = "Hold any button to continue!";
         }
 
 
         //When all players are ready, hit k to continue
-        if (Input.GetKey(KeyCode.K) && (activePlayers.Count >= 1))
+        if ((ReadyToStart) && (activePlayers.Count >= 1))
         {
             Debug.Log("Send!");
+            audioPlayingScript.PlaySoundEffect("Start");
             PlayerPrefs.SetInt("CurrentRound", 0);
             PlayerPrefs.SetInt("TotalRounds", 0);
             PlayerPrefs.SetString("DrawingPlayers", "");
@@ -95,7 +102,7 @@ public class PlayerHandover : MonoBehaviour
             PlayerPrefs.SetString("RemainingPlayers", string.Join( ",", activePlayers));
             isAllReady = true;
             playerActivation.SetActive(false);
-            SceneManager.LoadScene("Gameplay_L");
+            SceneManager.LoadScene("Tutorial");
             PlayerPrefs.SetString("isDraw", "false");
         }
     }

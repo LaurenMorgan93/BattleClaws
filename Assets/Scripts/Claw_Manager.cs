@@ -11,6 +11,8 @@ public class Claw_Manager : MonoBehaviour
     public RoundHandler scoreTrackingScript;
     public string playerIdentifier;
 
+    private AudioHandler audioScript;
+
     public int points;
     private readonly float maxX = 140f; // Set your maximum X position
     private readonly float maxZ = 235f; // Set your maximum Z position
@@ -20,14 +22,16 @@ public class Claw_Manager : MonoBehaviour
     private readonly float minZ = -60f; // Set your minimum Z position
     private GameObject CollectableObject;
     private int defaultSpeed = 50;
-    private GameObject heldObject;
+    public GameObject heldObject;
     private bool isSpeedBuffed;
-    private bool objectGrabbed;
+    public bool objectGrabbed;
     private Animator playerOneAnim;
     private GameObject playerOneClaw;
     public GameObject clawModel;
 
     private TMP_Text scoreUI;
+
+    public sbyte isInverted = 0;
 
     // Start is called before the first frame update
     private void Start()
@@ -38,6 +42,8 @@ public class Claw_Manager : MonoBehaviour
         scoreUI.text = "000000";
 
         scoreTrackingScript = GameObject.FindGameObjectWithTag("RoundHandler").GetComponent<RoundHandler>();
+
+        audioScript = FindObjectOfType<AudioHandler>();
     }
 
     // Update is called once per frame
@@ -70,14 +76,45 @@ public class Claw_Manager : MonoBehaviour
     {
         if (other.gameObject.tag.EndsWith("Player"))
         {
+            audioScript.PlaySoundEffect("Crash");
             Debug.Log("Collided with another claw!");
             other.gameObject.GetComponent<FixedJoint>();
             // destroy the fixed joint on the other claw's object 
             Destroy(other.gameObject.GetComponent<FixedJoint>());
-            other.gameObject.GetComponent<Claw_Manager>().heldObject.GetComponent<SpecialCollectable>().setHeld(false);
+            if (other.gameObject.GetComponent<Claw_Manager>().heldObject != null)
+            {
+                if (scoreTrackingScript.isDrawRound)
+                {
+                    other.gameObject.GetComponent<Claw_Manager>().heldObject.GetComponent<SpecialCollectable>()
+                        .setHeld(false);
+                }
+                var otherObject = other.gameObject.GetComponent<Claw_Manager>().heldObject;
+                otherObject.transform.parent = null;
+                otherObject.GetComponent<Rigidbody>().useGravity = true;
+                otherObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                otherObject.GetComponent<Rigidbody>().AddForce(Vector3.down* 100, ForceMode.Impulse);
+                
+                other.gameObject.GetComponent<Claw_Manager>().objectGrabbed = false;
+                other.gameObject.GetComponent<Claw_Manager>().heldObject = null;
+            }
+
             // destroy the fixed joint on this claw's object
-            Destroy(gameObject.GetComponent<FixedJoint>());
-            heldObject.GetComponent<SpecialCollectable>().setHeld(false);
+            if (heldObject != null)
+            {
+                if (heldObject && scoreTrackingScript.isDrawRound)
+                {
+                    heldObject.GetComponent<SpecialCollectable>().setHeld(false);
+                    
+                }
+                print("let go");
+                heldObject.transform.parent = null;
+                heldObject.GetComponent<Rigidbody>().useGravity = true;
+                heldObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                heldObject.GetComponent<Rigidbody>().AddForce(Vector3.down* 100, ForceMode.Impulse);
+                print("DROPPED!");
+                objectGrabbed = false;
+                heldObject = null;
+            }
         }
 
         if (other.gameObject.CompareTag("Wall")) Destroy(gameObject.GetComponent<FixedJoint>());
@@ -87,8 +124,10 @@ public class Claw_Manager : MonoBehaviour
     {
         //This code gets the X and Z input and moves the Player object with it.
         //float Xmovement = Input.GetAxis("Hor_" + pName);
-        var Xmovement = Input.GetAxis("Hor_" + playerIdentifier);
-        var Ymovement = Input.GetAxis("Vert_" + playerIdentifier);
+        
+        
+        var Xmovement = Input.GetAxis("Hor_" + playerIdentifier) * isInverted;
+        var Ymovement = Input.GetAxis("Vert_" + playerIdentifier) * isInverted;
         if (Mathf.Abs(Xmovement) <= 0.2 && Mathf.Abs(Ymovement) <= 0.2) return;
         var movement = new Vector3(Xmovement, 0, Ymovement);
         // Clamp the player's position within the boundaries
@@ -146,6 +185,7 @@ public class Claw_Manager : MonoBehaviour
 
     public void addPoints(int value)
     {
+        audioScript.PlaySoundEffect("Score");
         points += value;
         scoreUI.text = points.ToString().PadLeft(6, '0');
     }
