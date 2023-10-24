@@ -8,7 +8,9 @@ public class LoadingBarSlider : MonoBehaviour
     public float timeToFill = 10.0f;  // Time in seconds to fill the slider.
     private float fillRate;         // The rate at which the slider fills.
     private float currentTime = 0.0f; // Tracks the current time during filling.
-    private bool isFilling = false;  // Flag to control filling.
+    private bool isFilling = false;
+
+    public string location = "Gameplay_L";// Flag to control filling.
 
     // Start is called before the first frame update.
     private void Start()
@@ -49,6 +51,6 @@ public class LoadingBarSlider : MonoBehaviour
         isFilling = false;   // Stop filling.
 
         // Load the next round or scene (adjust "NextRound" to your scene name).
-        SceneManager.LoadScene("Gameplay_L");
+        SceneManager.LoadScene(location);
     }
 }
