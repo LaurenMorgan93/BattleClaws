@@ -44,7 +44,7 @@ public class RoundHandler : MonoBehaviour
         }
         else if (Input.anyKey && hasRoundEnded && roundIsDraw)
         {
-            SceneManager.LoadScene("Gameplay_Draw");
+            SceneManager.LoadScene("DrawTutorial");
         }
     }
 
@@ -259,6 +259,6 @@ public class RoundHandler : MonoBehaviour
 
     public void loadBonusRound()
     {
-        SceneManager.LoadScene("Gameplay_Draw");
+        SceneManager.LoadScene("DrawTutorial");
     }
 }
