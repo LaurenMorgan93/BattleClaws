@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638327933399034865
-    m_Hash: 1203160300
+      ticks: 638332347535471444
+    m_Hash: 1798031113
   m_LockFileStatus:
     m_FilePath: C:/Users/every/OneDrive/Documents/GitHub/BattleClaws/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638327933399094711
-    m_Hash: 3623650761
+      ticks: 638332347535477914
+    m_Hash: 1218319884
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:

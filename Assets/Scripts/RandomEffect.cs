@@ -10,7 +10,7 @@ public class RandomEffect : MonoBehaviour
    [SerializeField] private int frozenSpeed;
     public Claw_Manager PlayerManagerScript;
     private TimerScript timerHandlerScript;
-    private GameObject lastPlayerGrab;
+    public GameObject lastPlayerGrab;
     private int pointsValue;
     private bool isSpeedBuffed;
     private string grabbingPlayerString;
