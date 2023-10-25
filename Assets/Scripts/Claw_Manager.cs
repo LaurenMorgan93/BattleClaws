@@ -26,6 +26,7 @@ public class Claw_Manager : MonoBehaviour
     private bool isSpeedBuffed;
     public bool objectGrabbed;
     private Animator playerOneAnim;
+    public Animator clawModelAnimator;
     private GameObject playerOneClaw;
     public GameObject clawModel;
 
@@ -135,8 +136,8 @@ public class Claw_Manager : MonoBehaviour
         // Clamp the player's position within the boundaries
         parentObject.transform.Translate(movement * clawMoveSpeed * Time.deltaTime);
         var newPosition = parentObject.transform.position + movement * clawMoveSpeed * Time.deltaTime;
-        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
-        newPosition.z = Mathf.Clamp(newPosition.z, minZ, maxZ);
+        //newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+        //newPosition.z = Mathf.Clamp(newPosition.z, minZ, maxZ);
         // Update the player's position
         parentObject.transform.position = newPosition;
     }
@@ -153,6 +154,7 @@ public class Claw_Manager : MonoBehaviour
                 print("GRABBING!");
                 playerOneAnim = playerOneClaw.GetComponent<Animator>();
                 playerOneAnim.SetTrigger("Grab");
+                clawModelAnimator.SetTrigger("open");
                 grabCooldown = 100;
             }
             else if (objectGrabbed && heldObject)
@@ -163,6 +165,7 @@ public class Claw_Manager : MonoBehaviour
                     
                 }
                 print("let go");
+                clawModelAnimator.SetTrigger("open");
                 heldObject.transform.parent = null;
                 heldObject.GetComponent<Rigidbody>().useGravity = true;
                 heldObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -211,6 +214,7 @@ public class Claw_Manager : MonoBehaviour
     public void checkGrab()
     {
         var currentTarget = sendRay();
+        clawModelAnimator.SetTrigger("close");
 
         try
         {
