@@ -129,3 +129,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lastPlayer: {fileID: 0}
   scoreTrackingScript: {fileID: 0}
+  shineMaterial: {fileID: 2100000, guid: f4fdafc3afc844fd7a4264d6f800712f, type: 2}

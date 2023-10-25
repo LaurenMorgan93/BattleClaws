@@ -127,4 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f247d6648043449b386cbe46b779c069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastPlayer: {fileID: 0}
   scoreTrackingScript: {fileID: 0}
+  shineMaterial: {fileID: 2100000, guid: f4fdafc3afc844fd7a4264d6f800712f, type: 2}

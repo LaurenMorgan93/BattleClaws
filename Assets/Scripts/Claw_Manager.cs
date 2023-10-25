@@ -89,6 +89,7 @@ public class Claw_Manager : MonoBehaviour
                         .setHeld(false);
                 }
                 var otherObject = other.gameObject.GetComponent<Claw_Manager>().heldObject;
+                other.gameObject.GetComponent<Claw_Manager>().heldObject.GetComponent<Collectables>().activateSuperCharge();
                 otherObject.transform.parent = null;
                 otherObject.GetComponent<Rigidbody>().useGravity = true;
                 otherObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -108,6 +109,7 @@ public class Claw_Manager : MonoBehaviour
                 }
                 print("let go");
                 heldObject.transform.parent = null;
+                heldObject.GetComponent<Collectables>().activateSuperCharge();
                 heldObject.GetComponent<Rigidbody>().useGravity = true;
                 heldObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 heldObject.GetComponent<Rigidbody>().AddForce(Vector3.down* 100, ForceMode.Impulse);
