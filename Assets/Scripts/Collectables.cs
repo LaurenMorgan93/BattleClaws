@@ -21,7 +21,6 @@ public class Collectables : MonoBehaviour
     public void Start()
     {
         originalMaterial = this.GetComponent<Renderer>().material;
-        pointsStore = pointValue;
         assignPointvalue();
     }
 
@@ -29,6 +28,7 @@ public class Collectables : MonoBehaviour
     {
         //Debug.Log("Assign a random value to the collectable object");
         pointValue += Random.Range(50, 250);
+        pointsStore = pointValue;
     }
     
   private void OnTriggerEnter(Collider other)
