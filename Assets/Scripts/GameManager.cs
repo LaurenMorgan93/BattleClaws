@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         initPanels();
         initPlayers();
         initDropZones(false);
-        initCollectables(80);
+        initCollectables(140);
     }
 
 
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
     private void spawnStandardCollectable(int value)
     {
         var chooseRandom = Random.Range(0, collectablesPrefabs.Count);
-        Vector3 spawnPos = this.transform.position + new Vector3(Random.Range(-80, 80), 0, Random.Range(-80, 80));
+        Vector3 spawnPos = this.transform.position + new Vector3(Random.Range(-110, 110), 0, Random.Range(-110, 110));
         Instantiate(collectablesPrefabs[chooseRandom], spawnPos, Quaternion.identity);
     }
 

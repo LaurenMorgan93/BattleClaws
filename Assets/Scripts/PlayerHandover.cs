@@ -42,7 +42,7 @@ public class PlayerHandover : MonoBehaviour
     private void checkPlayersReady()
     {
         //Activate corrisponding player based upon which key is pressed
-        if (Input.GetKey("joystick 1 button 0")&& (activePlayers.IndexOf("p1") == -1))
+        if ((Input.GetKey("joystick 1 button 0") || Input.GetKey(KeyCode.U))&& (activePlayers.IndexOf("p1") == -1))
         {
             audioPlayingScript.PlaySoundEffect("Start");
             //Find the p1 Gameobject in the array
@@ -53,7 +53,7 @@ public class PlayerHandover : MonoBehaviour
         }
         
         //Just copied from the p1 logic
-        if (Input.GetKey("joystick 2 button 0") && (activePlayers.IndexOf("p2") == -1))
+        if ((Input.GetKey("joystick 2 button 0") || Input.GetKey(KeyCode.I)) && (activePlayers.IndexOf("p2") == -1))
         {
             audioPlayingScript.PlaySoundEffect("Start");
             GameObject p1 = isActiveText.Find(x => x.name == "Player 2");

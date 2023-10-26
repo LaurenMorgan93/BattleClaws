@@ -1917,6 +1917,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: arcade
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e100a180d230b084189a403e49adb378, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: e100a180d230b084189a403e49adb378, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e100a180d230b084189a403e49adb378, type: 3}
 --- !u!1 &419340136
@@ -3454,7 +3462,7 @@ GameObject:
   - component: {fileID: 793913167}
   - component: {fileID: 793913166}
   - component: {fileID: 793913165}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Gameplay Ground Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5254,6 +5262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: glass
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fb4bdde5623f7794a80e604b4c56daff, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb4bdde5623f7794a80e604b4c56daff, type: 3}
 --- !u!1 &1350905245
@@ -6439,9 +6451,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPackagePrefabs:
   - {fileID: 3335268061827105648, guid: e75b594a7d7e4334882b9129866e1304, type: 3}
-  - {fileID: 1968366345167812447, guid: 93e32660a9acc1a4e847af1df197a6b6, type: 3}
-  - {fileID: 1200682411389335296, guid: 7cc4b6859ae69a745a3e7a003841abd4, type: 3}
-  - {fileID: 7148028614889820128, guid: 8e247ccc75d6ba44c89056cbb1bc8e3b, type: 3}
+  - {fileID: 3335268061827105648, guid: 2abf7a7cdde2bf9439a5e2f1906f0729, type: 3}
+  - {fileID: 3335268061827105648, guid: 0fb0a10ad579c5443827335163d7e4a5, type: 3}
+  - {fileID: 3335268061827105648, guid: d325e0299def272429ad18d4fa62d290, type: 3}
   dropZonePrefabs:
   - {fileID: 1813320315147252995, guid: 169373985d9f76d4490b0499e72ca343, type: 3}
   - {fileID: 8890779074376786027, guid: 7c1009470b68f9246887aef3eb0bc61e, type: 3}
