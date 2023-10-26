@@ -14,14 +14,14 @@ public class Claw_Manager : MonoBehaviour
     private AudioHandler audioScript;
 
     public int points;
-    private readonly float maxX = 140f; // Set your maximum X position
-    private readonly float maxZ = 235f; // Set your maximum Z position
+    public float maxX = 190f; // Set your maximum X position
+    public float maxZ = 325f; // Set your maximum Z position
 
     // Define the boundaries for player movement
-    private readonly float minX = -150f; // Set your minimum X position
-    private readonly float minZ = -60f; // Set your minimum Z position
+    public float minX = -230f; // Set your minimum X position
+    public float minZ = -100f; // Set your minimum Z position
     private GameObject CollectableObject;
-    private int defaultSpeed = 50;
+    private int defaultSpeed = 80;
     public GameObject heldObject;
     private bool isSpeedBuffed;
     public bool objectGrabbed;
@@ -45,6 +45,14 @@ public class Claw_Manager : MonoBehaviour
         scoreTrackingScript = GameObject.FindGameObjectWithTag("RoundHandler").GetComponent<RoundHandler>();
 
         audioScript = FindObjectOfType<AudioHandler>();
+
+        if (scoreTrackingScript.isDrawRound)
+        {
+            minX = -330;
+            maxX = 270;
+            maxZ = 175;
+            minZ = 175;
+        }
     }
 
     // Update is called once per frame
@@ -131,13 +139,15 @@ public class Claw_Manager : MonoBehaviour
         
         var Xmovement = Input.GetAxis("Hor_" + playerIdentifier) * isInverted;
         var Ymovement = Input.GetAxis("Vert_" + playerIdentifier) * isInverted;
+        //var Xmovement = Input.GetAxis("Horizontal");
+        //var Ymovement = Input.GetAxis("Vertical");
         if (Mathf.Abs(Xmovement) <= 0.2 && Mathf.Abs(Ymovement) <= 0.2) return;
         var movement = new Vector3(Xmovement, 0, Ymovement);
         // Clamp the player's position within the boundaries
         parentObject.transform.Translate(movement * clawMoveSpeed * Time.deltaTime);
         var newPosition = parentObject.transform.position + movement * clawMoveSpeed * Time.deltaTime;
-        //newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
-        //newPosition.z = Mathf.Clamp(newPosition.z, minZ, maxZ);
+        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+        newPosition.z = Mathf.Clamp(newPosition.z, minZ, maxZ);
         // Update the player's position
         parentObject.transform.position = newPosition;
     }
@@ -147,6 +157,7 @@ public class Claw_Manager : MonoBehaviour
         
         // If the player presses the button, run the animation that makes the Claw drop down.
         if (Input.GetKeyDown("joystick " + playerIdentifier[1] + " button 0"))
+        //if (Input.GetKeyDown(KeyCode.G))
         {
             
             if (!objectGrabbed && grabCooldown <= 0)
@@ -203,8 +214,8 @@ public class Claw_Manager : MonoBehaviour
     private GameObject sendRay()
     {
         RaycastHit hit;
-
-        if (Physics.BoxCast(gameObject.transform.position, new Vector3(0.9f, 0.9f, 0.9f), Vector3.down, out hit) &&
+        
+        if (Physics.BoxCast(gameObject.transform.position + new Vector3(0,50,0), new Vector3(0.2f, 0.2f, 0.2f), Vector3.down * 1000f, out hit) &&
             (hit.collider.CompareTag("Collectable") || hit.collider.CompareTag("MysteryBox")))
             return hit.collider.gameObject;
 

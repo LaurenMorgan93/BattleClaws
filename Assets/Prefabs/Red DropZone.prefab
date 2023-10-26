@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7552520412025310735}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Red DropZone
   m_TagString: DropZone
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 4722240946744986018}
   - component: {fileID: 4489747903647638052}
   - component: {fileID: 1582283038886087452}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: P1 Winzone
   m_TagString: WinZone
   m_Icon: {fileID: 0}
