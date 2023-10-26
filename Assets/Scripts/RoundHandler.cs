@@ -105,6 +105,7 @@ public class RoundHandler : MonoBehaviour
         foreach (string player in activePlayers)
         {
             Debug.Log(player);
+            int playerNum = int.Parse(player[1].ToString()) - 1;
             GameObject currentPlayer = GameObject.FindGameObjectWithTag(player + " Player");
             int score = currentPlayer.GetComponent<Claw_Manager>().getPoints();
             playerPoints[player] = score;
