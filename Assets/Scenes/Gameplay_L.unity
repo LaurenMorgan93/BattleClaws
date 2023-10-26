@@ -1917,6 +1917,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: arcade
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e100a180d230b084189a403e49adb378, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: e100a180d230b084189a403e49adb378, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e100a180d230b084189a403e49adb378, type: 3}
 --- !u!1 &419340136
@@ -3454,7 +3462,7 @@ GameObject:
   - component: {fileID: 793913167}
   - component: {fileID: 793913166}
   - component: {fileID: 793913165}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Gameplay Ground Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
