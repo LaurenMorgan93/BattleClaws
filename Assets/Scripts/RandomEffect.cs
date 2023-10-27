@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RandomEffect : MonoBehaviour
 {
@@ -15,6 +16,16 @@ public class RandomEffect : MonoBehaviour
     private bool isSpeedBuffed;
     private string grabbingPlayerString;
     private string[] randomEffects = { "TimeLoss", "SpeedBoost", "SlowPlayers", "FreezePlayers", "DoublePoints", "ShuffleZones" };
+    public GameObject RandomPanel;
+    public TextMeshProUGUI randomTextbox;
+
+void Start()
+{
+    RandomPanel = GameObject.FindWithTag("REPanel");
+    randomTextbox = RandomPanel.GetComponentInChildren<TextMeshProUGUI>();
+    RandomPanel.SetActive(false);
+}
+
 
 
     public void assignRandomEffect()
@@ -28,6 +39,9 @@ public class RandomEffect : MonoBehaviour
                  timerHandlerScript = GameObject.FindObjectOfType<TimerScript>();
                  timerHandlerScript.timeLeftInRound -= 30.0f;
                  Debug.Log("EFFECT 1 Lost 30 seconds!");
+                 RandomPanel.SetActive(true);
+                 randomTextbox.text = "-10 SECONDS";
+
                  
 
                 break;
@@ -37,6 +51,9 @@ public class RandomEffect : MonoBehaviour
                 PlayerManagerScript.setSpeed(speedBuffAmount);
                 isSpeedBuffed = true;
                 Debug.Log("Speed Boost " + lastPlayerGrab.tag + " for 10 seconds");
+                RandomPanel.SetActive(true);
+                randomTextbox.text = (lastPlayerGrab.tag + " Speed Boost!");
+
 
                 break;
 
@@ -45,6 +62,8 @@ public class RandomEffect : MonoBehaviour
              SetOtherPlayersSpeed(speedDebuffAmount);            
              isSpeedBuffed = true;
              Debug.Log("slowing players for 10 seconds");
+             RandomPanel.SetActive(true);
+             randomTextbox.text = ("SLOWED!");
             break;
 
              case "FreezePlayers":
@@ -53,6 +72,8 @@ public class RandomEffect : MonoBehaviour
              freezeOtherPlayerSpeed(frozenSpeed);
              Debug.Log("Freeze Players For 10 Seconds");
              isSpeedBuffed = true;
+             RandomPanel.SetActive(true);
+             randomTextbox.text = ("FROZEN SOLID!");
              break;
 
             case "DoublePoints":
@@ -60,12 +81,16 @@ public class RandomEffect : MonoBehaviour
             Debug.Log("Double Points for 10 seconds");
              PlayerManagerScript.doublePointsBuffActive = true;
              PlayerManagerScript.buffCooldown = 10;
+             RandomPanel.SetActive(true);
+             randomTextbox.text = ("DOUBLE POINTS!");
             Destroy(gameObject);
              break;
             
             case "ShuffleZones":
                 GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
                 gameManager.initDropZones(true);
+                RandomPanel.SetActive(true);
+                randomTextbox.text = ("SWITCHEROO!");
                 Destroy(gameObject);
                 break;
         }

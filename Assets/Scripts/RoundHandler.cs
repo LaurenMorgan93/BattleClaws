@@ -15,11 +15,15 @@ public class RoundHandler : MonoBehaviour
     public bool hasRoundEnded;
     public GameObject EliminationScreen;
     public GameObject DrawIdentifierScreen;
+    public GameObject MultiDrawScreen;
+    public GameObject randomEffectPanel;
     public TextMeshProUGUI EliminateTextBox;
+    public TextMeshProUGUI MultiDrawPlayerTextbox;
     private int totalRounds;
     private int currentRound = 0;
     public bool isDrawRound = false;
     private bool roundIsDraw = false;
+    private bool isMultiDraw = false;
     public TMP_Text currentRoundText;
     public GameManager gameManager;
     public DrawGameManager DrawGameManager;
@@ -29,8 +33,10 @@ public class RoundHandler : MonoBehaviour
 
     public void Start()
     {
+        MultiDrawScreen.SetActive(false);
         EliminationScreen.SetActive(false);
         DrawIdentifierScreen.SetActive(false);
+        //randomEffectPanel.SetActive(false);
 
         updateRoundValues();
     }
@@ -45,6 +51,11 @@ public class RoundHandler : MonoBehaviour
         else if (Input.anyKey && hasRoundEnded && roundIsDraw)
         {
             SceneManager.LoadScene("DrawTutorial");
+        }
+
+        else if (Input.anyKey && hasRoundEnded && isMultiDraw)
+        {
+            SceneManager.LoadScene("MultiDrawTutorial");
         }
     }
 
@@ -112,23 +123,6 @@ public class RoundHandler : MonoBehaviour
         }
     }
 
-    /*// Method to add points for a specific player tag.
-    public void AddPointsForPlayer(string playerTag, int points)
-    {
-        if (playerPoints.ContainsKey(playerTag))
-        {
-            playerPoints[playerTag] += points;
-            Debug.Log(playerTag + " scored " + points + " points. Total points: " + playerPoints[playerTag]);
-        }
-        else
-        {
-            // Player tag doesn't exist, add a new entry for the player.
-            playerPoints[playerTag] = points;
-            Debug.Log(playerTag + " scored " + points + " points. Total points: " + playerPoints[playerTag]);
-        }
-    }*/
-
-    // Method to get points for a specific player tag.
     public int GetPointsForPlayer(string playerTag)
     {
         if (playerPoints.ContainsKey(playerTag))
@@ -185,6 +179,14 @@ public class RoundHandler : MonoBehaviour
             DrawTextBox.text = playersWithIdenticalLowestScores[0] + " VS " + playersWithIdenticalLowestScores[1];
             return "Tie among players: " + string.Join(", ", playersWithIdenticalLowestScores);
         }
+
+        if (playersWithIdenticalLowestScores.Count >= 3)
+        {
+
+           declareMultiDraw();
+           return "multiple draw";
+
+        }
         else
         {
             Debug.Log("standard Scores Reached!" + playerWithLowestScore);
@@ -234,6 +236,17 @@ public class RoundHandler : MonoBehaviour
         Debug.Log("draw logic reached");
         DrawIdentifierScreen.SetActive(true);
         roundScreenAnim.SetTrigger("Draw");
+    }
+
+    public void declareMultiDraw()
+    {
+        
+        MultiDrawScreen.SetActive(true);
+        isMultiDraw = true;
+        roundScreenAnim.SetTrigger("MultiDraw");
+        MultiDrawPlayerTextbox.text = "Text HERE";
+
+
     }
     public void EliminateLoser()
     {
