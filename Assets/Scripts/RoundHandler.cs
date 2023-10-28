@@ -27,19 +27,36 @@ public class RoundHandler : MonoBehaviour
     public TextMeshProUGUI DrawTextBox;
     public Animator roundScreenAnim;
 
+    private bool resetRound = false;
+
+    public GameObject multiDrawPanel;
+    public GameObject randomEffectScreen;
+
     public void Start()
     {
         EliminationScreen.SetActive(false);
         DrawIdentifierScreen.SetActive(false);
-
+        multiDrawPanel.SetActive(false);
+        randomEffectScreen.SetActive(false);
         updateRoundValues();
+        
+        if (DrawGameManager)
+        {
+            isDrawRound = true;
+        }
     }
 
     private void Update()
     {
+        print(isDrawRound);
         if (Input.anyKey && hasRoundEnded && !roundIsDraw)
         {
             PlayerPrefs.SetString("isDraw", "false");
+            SceneManager.LoadScene("Gameplay_L");
+        }   
+        else if (Input.anyKey && hasRoundEnded && resetRound)
+        {
+            PlayerPrefs.SetString("CustomRoundTitle", "Extra Round!");
             SceneManager.LoadScene("Gameplay_L");
         }
         else if (Input.anyKey && hasRoundEnded && roundIsDraw)
@@ -50,11 +67,19 @@ public class RoundHandler : MonoBehaviour
 
     private void updateRoundValues()
     {
+        print(PlayerPrefs.GetString("isDraw"));
         if (PlayerPrefs.GetString("isDraw") == "true")
         {
             isDrawRound = true;
             currentRoundText.text = "Bonus Round!";
             return;
+        }
+
+        if (PlayerPrefs.GetString("CustomRoundTitle") != "")
+        {
+            currentRoundText.text = PlayerPrefs.GetString("CustomRoundTitle");
+            PlayerPrefs.SetString("CustomRoundTitle", "");
+            currentRound--;
         }
 
         if (PlayerPrefs.GetInt("TotalRounds") != 0)
@@ -178,12 +203,21 @@ public class RoundHandler : MonoBehaviour
         }
 
         // Check if there are players with identical lowest scores.
-        if (playersWithIdenticalLowestScores.Count > 1)
+        if (playersWithIdenticalLowestScores.Count == 2)
         {
+            PlayerPrefs.SetString("isDraw", "true");
             Debug.Log("Draw logic Reached!");
             roundIsDraw = true;
             DrawTextBox.text = playersWithIdenticalLowestScores[0] + " VS " + playersWithIdenticalLowestScores[1];
             return "Tie among players: " + string.Join(", ", playersWithIdenticalLowestScores);
+        }
+        else if (playersWithIdenticalLowestScores.Count > 2)
+        {
+            
+            PlayerPrefs.SetString("isDraw", "false");
+            declareDraw(true);
+            return "More than two player draw, Restart Round";
+
         }
         else
         {
@@ -219,7 +253,7 @@ public class RoundHandler : MonoBehaviour
             EliminateLoser();
             
 
-            if (roundIsDraw)
+            if (roundIsDraw && !resetRound)
             {
                 declareDraw();
             }
@@ -229,11 +263,20 @@ public class RoundHandler : MonoBehaviour
         }
     }
     
-    public void declareDraw()
+    public void declareDraw(bool restartRound = false)
     {
         Debug.Log("draw logic reached");
-        DrawIdentifierScreen.SetActive(true);
-        roundScreenAnim.SetTrigger("Draw");
+        if (restartRound)
+        {
+            resetRound = true;
+            multiDrawPanel.SetActive(true);
+            roundScreenAnim.SetTrigger("MultiDraw");
+        }
+        else
+        {
+            DrawIdentifierScreen.SetActive(true);
+            roundScreenAnim.SetTrigger("Draw");
+        }
     }
     public void EliminateLoser()
     {

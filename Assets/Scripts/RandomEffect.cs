@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class RandomEffect : MonoBehaviour
 {
@@ -10,6 +13,7 @@ public class RandomEffect : MonoBehaviour
    [SerializeField] private int frozenSpeed;
     public Claw_Manager PlayerManagerScript;
     private TimerScript timerHandlerScript;
+    private RoundHandler roundHandlerScript;
     public GameObject lastPlayerGrab;
     private int pointsValue;
     private bool isSpeedBuffed;
@@ -17,16 +21,29 @@ public class RandomEffect : MonoBehaviour
     private string[] randomEffects = { "TimeLoss", "SpeedBoost", "SlowPlayers", "FreezePlayers", "DoublePoints", "ShuffleZones" };
 
 
+    private void Start()
+    {
+        roundHandlerScript = GameObject.FindObjectOfType<RoundHandler>();
+    }
+
+    public void Hide()
+    {
+        this.gameObject.SetActive(false);
+    }
+
     public void assignRandomEffect()
     {
-      string randomEffect = randomEffects[Random.Range(0, randomEffects.Length)];
+        string randomEffect = randomEffects[Random.Range(0, randomEffects.Length)];
+        roundHandlerScript.randomEffectScreen.GetComponentInChildren<TMP_Text>().text = randomEffect + "!";
+        roundHandlerScript.randomEffectScreen.SetActive(true);
+
         // Apply the selected random effect
         switch (randomEffect)
         {
             case "TimeLoss":
                 // This effect removes 30 seconds from the In-Game Timer
-                 timerHandlerScript = GameObject.FindObjectOfType<TimerScript>();
-                 timerHandlerScript.timeLeftInRound -= 30.0f;
+                timerHandlerScript = GameObject.FindObjectOfType<TimerScript>();
+                timerHandlerScript.timeLeftInRound -= 30.0f;
                  Debug.Log("EFFECT 1 Lost 30 seconds!");
                  
 

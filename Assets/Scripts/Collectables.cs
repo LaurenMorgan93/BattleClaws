@@ -28,6 +28,7 @@ public class Collectables : MonoBehaviour
     {
         //Debug.Log("Assign a random value to the collectable object");
         pointValue += Random.Range(50, 250);
+        pointValue = 50 * (pointValue / 50);
         pointsStore = pointValue;
     }
     

@@ -96,6 +96,8 @@ public class Claw_Manager : MonoBehaviour
                 {
                     other.gameObject.GetComponent<Claw_Manager>().heldObject.GetComponent<SpecialCollectable>()
                         .setHeld(false);
+                    other.gameObject.GetComponent<Claw_Manager>().heldObject.GetComponent<Rigidbody>().useGravity =
+                        true;
                 }
                 var otherObject = other.gameObject.GetComponent<Claw_Manager>().heldObject;
                 other.gameObject.GetComponent<Claw_Manager>().heldObject.GetComponent<Collectables>().activateSuperCharge();
