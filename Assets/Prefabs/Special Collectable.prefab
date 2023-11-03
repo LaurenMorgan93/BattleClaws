@@ -127,8 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768737485364344278acccf19c916cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBuffAmount: 100
-  speedDebuffAmount: 25
-  frozenSpeed: 0
+  speedBuffAmount: 70
+  speedDebuffAmount: 30
   PlayerManagerScript: {fileID: 0}
   lastPlayerGrab: {fileID: 0}

@@ -61,7 +61,7 @@ public class PlayerHandover : MonoBehaviour
             activePlayers.Add("p2");
         }
         
-        if (Input.GetKey("joystick 3 button 0")&& (activePlayers.IndexOf("p3") == -1))
+        if ((Input.GetKey("joystick 3 button 0")|| Input.GetKey(KeyCode.O))&& (activePlayers.IndexOf("p3") == -1))
         {
             audioPlayingScript.PlaySoundEffect("Start");
             GameObject p1 = isActiveText.Find(x => x.name == "Player 3");
@@ -69,7 +69,7 @@ public class PlayerHandover : MonoBehaviour
             activePlayers.Add("p3");
         }
         
-        if (Input.GetKey("joystick 4 button 0")&& (activePlayers.IndexOf("p4") == -1))
+        if ((Input.GetKey("joystick 4 button 0")|| Input.GetKey(KeyCode.P)) && (activePlayers.IndexOf("p4") == -1))
         {
             audioPlayingScript.PlaySoundEffect("Start");
             GameObject p1 = isActiveText.Find(x => x.name == "Player 4");
