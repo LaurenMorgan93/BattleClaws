@@ -1,166 +1,105 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class RandomEffect : MonoBehaviour
 {
-   [SerializeField] private int speedBuffAmount;
-   [SerializeField] private int speedDebuffAmount;
-   [SerializeField] private int frozenSpeed;
+    [SerializeField] private int speedBuffAmount;
+    [SerializeField] private int speedDebuffAmount;
     public Claw_Manager PlayerManagerScript;
-    private TimerScript timerHandlerScript;
-    private RoundHandler roundHandlerScript;
     public GameObject lastPlayerGrab;
-    private int pointsValue;
-    private bool isSpeedBuffed;
-    private string grabbingPlayerString;
-    private string[] randomEffects = { "TimeLoss", "SpeedBoost", "SlowPlayers", "FreezePlayers", "DoublePoints", "ShuffleZones" };
+    private GameManager gameManager;
+
+    private string[] randomEffects = { "SpeedBoost", "SlowPlayers", "DoublePoints", "ShuffleZones", "LockZone"/*, "ColourDrain" */};
+    //private readonly string[] randomEffects = { "SlowPlayers" };
+    private RoundHandler roundHandlerScript;
+    private TimerScript timerHandlerScript;
 
 
     private void Start()
     {
-        roundHandlerScript = GameObject.FindObjectOfType<RoundHandler>();
+        roundHandlerScript = FindObjectOfType<RoundHandler>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        var collidersTag = other.GetComponent<Collider>().tag;
+
+        switch (collidersTag)
+        {
+            case "WinZone":
+                if (lastPlayerGrab == null) break;
+
+                //Debug.Log("Assign " + pointsValue + " to " + lastPlayerToGrab.name);
+                assignRandomEffect();
+                //PlayerManagerScript.awardScore(pointsValue);
+                gameObject.SetActive(false);
+                break;
+            default:
+                lastPlayerGrab = other.gameObject;
+                PlayerManagerScript = other.gameObject.GetComponent<Claw_Manager>();
+                break;
+        }
     }
 
     public void Hide()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void assignRandomEffect()
     {
-        string randomEffect = randomEffects[Random.Range(0, randomEffects.Length)];
+        var randomEffect = randomEffects[Random.Range(0, randomEffects.Length)];
         roundHandlerScript.randomEffectScreen.GetComponentInChildren<TMP_Text>().text = randomEffect + "!";
         roundHandlerScript.randomEffectScreen.SetActive(true);
 
         // Apply the selected random effect
         switch (randomEffect)
         {
-            case "TimeLoss":
-                // This effect removes 30 seconds from the In-Game Timer
-                timerHandlerScript = GameObject.FindObjectOfType<TimerScript>();
-                timerHandlerScript.timeLeftInRound -= 30.0f;
-                 Debug.Log("EFFECT 1 Lost 30 seconds!");
-                 
-
-                break;
-
             case "SpeedBoost":
                 // This effect changed the current move speed  of the player who scored the mystery box for 10 seconds.
                 PlayerManagerScript.setSpeed(speedBuffAmount);
-                isSpeedBuffed = true;
                 Debug.Log("Speed Boost " + lastPlayerGrab.tag + " for 10 seconds");
 
                 break;
 
-             case "SlowPlayers":
-              // This effect changes the OTHER players move speed for 10 seconds.
-             SetOtherPlayersSpeed(speedDebuffAmount);            
-             isSpeedBuffed = true;
-             Debug.Log("slowing players for 10 seconds");
-            break;
-
-             case "FreezePlayers":
-            //  This effect freezes the OTHER players by setting their move speed to 0 for 10 seconds.
-             
-             freezeOtherPlayerSpeed(frozenSpeed);
-             Debug.Log("Freeze Players For 10 Seconds");
-             isSpeedBuffed = true;
-             break;
+            case "SlowPlayers":
+                // This effect changes the OTHER players move speed for 10 seconds.
+                SetOtherPlayersSpeed(speedDebuffAmount);
+                Debug.Log("slowing players for 10 seconds");
+                break;
 
             case "DoublePoints":
-            // this effects doubles the value of collectables when awarding a score for 10 seconds
-            Debug.Log("Double Points for 10 seconds");
-             PlayerManagerScript.doublePointsBuffActive = true;
-             PlayerManagerScript.buffCooldown = 10;
-            Destroy(gameObject);
-             break;
-            
+                // this effects doubles the value of collectables when awarding a score for 10 seconds
+                Debug.Log("Double Points for 10 seconds");
+                PlayerManagerScript.doublePointsBuffActive = true;
+                PlayerManagerScript.buffCooldown = 10;
+                Destroy(gameObject);
+                break;
+
             case "ShuffleZones":
-                GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
                 gameManager.initDropZones(true);
+                Destroy(gameObject);
+                break;
+
+            case "LockZone":
+                gameManager.lockRandomDropZone();
                 Destroy(gameObject);
                 break;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        string collidersTag = other.GetComponent<Collider>().tag;
-
-    switch (collidersTag)
-    {
-        case "WinZone":
-            if (lastPlayerGrab == null)
-            {
-                break;
-            }
-
-            //Debug.Log("Assign " + pointsValue + " to " + lastPlayerToGrab.name);
-            assignRandomEffect();
-            //PlayerManagerScript.awardScore(pointsValue);
-            gameObject.SetActive(false);
-            break;
-        default:
-            lastPlayerGrab = other.gameObject;
-            grabbingPlayerString = collidersTag;
-            PlayerManagerScript = other.gameObject.GetComponent<Claw_Manager>();
-            break;
-    }
-
-    }
-
     private void SetOtherPlayersSpeed(float speed)
     {
-        // List of player tags
-        List<string> playerTags = new List<string> { "Player One", "Player Two"}; //, "Player Three", "Player Four" };
+        var activePlayers = gameManager.ActivePlayerObjects;
 
-        foreach (string tag in playerTags)
+        foreach (var player in activePlayers)
         {
-            if (tag != grabbingPlayerString)
-            {
-                GameObject[] players = GameObject.FindGameObjectsWithTag(tag);
-
-                foreach (GameObject player in players)
-                {
-                    // Check if the player object has a PlayerManagerScript
-                     PlayerManagerScript = player.GetComponent<Claw_Manager>();
-                    if (PlayerManagerScript != null)
-                    {
-                        // Set the speed of other players to the specified value
-                        PlayerManagerScript.setSpeed(speedDebuffAmount);
-                    }
-                }
-            }
-        }
-    }
-
-    private void freezeOtherPlayerSpeed(float speed) // find a better way to do this without so many functions
-    {
-        // List of player tags
-        List<string> playerTags = new List<string> { "Player One", "Player Two"}; //, "Player Three", "Player Four" };
-
-        foreach (string tag in playerTags)
-        {
-            if (tag != grabbingPlayerString)
-            {
-                GameObject[] players = GameObject.FindGameObjectsWithTag(tag);
-
-                foreach (GameObject player in players)
-                {
-                    // Check if the player object has a PlayerManagerScript
-                     PlayerManagerScript = player.GetComponent<Claw_Manager>();
-                    if (PlayerManagerScript != null)
-                    {
-                        // Set the speed of other players to 0 temporarily
-                        PlayerManagerScript.setSpeed(frozenSpeed);
-                    }
-                }
-            }
+            // Check if the player object has a PlayerManagerScript
+            var currentPlayerManagerScript = player.GetComponentInChildren<Claw_Manager>();
+            if (currentPlayerManagerScript != null && currentPlayerManagerScript != PlayerManagerScript)
+                // Set the speed of other players to the specified value
+                currentPlayerManagerScript.setSpeed(speedDebuffAmount);
         }
     }
 }

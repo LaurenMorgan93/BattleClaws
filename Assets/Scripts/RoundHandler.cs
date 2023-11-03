@@ -28,6 +28,7 @@ public class RoundHandler : MonoBehaviour
     public Animator roundScreenAnim;
 
     private bool resetRound = false;
+    private float freezeControls = 0f;
 
     public GameObject multiDrawPanel;
     public GameObject randomEffectScreen;
@@ -48,26 +49,31 @@ public class RoundHandler : MonoBehaviour
 
     private void Update()
     {
-        print(isDrawRound);
-        if (Input.anyKey && hasRoundEnded && !roundIsDraw)
+        if (freezeControls >= 0)
         {
-            PlayerPrefs.SetString("isDraw", "false");
-            SceneManager.LoadScene("Gameplay_L");
-        }   
-        else if (Input.anyKey && hasRoundEnded && resetRound)
-        {
-            PlayerPrefs.SetString("CustomRoundTitle", "Extra Round!");
-            SceneManager.LoadScene("Gameplay_L");
+            freezeControls -= Time.deltaTime;
         }
-        else if (Input.anyKey && hasRoundEnded && roundIsDraw)
+        if (freezeControls <= 0)
         {
-            SceneManager.LoadScene("DrawTutorial");
+            if (Input.anyKey && hasRoundEnded && !roundIsDraw)
+            {
+                PlayerPrefs.SetString("isDraw", "false");
+                SceneManager.LoadScene("Gameplay_L");
+            }
+            else if (Input.anyKey && hasRoundEnded && resetRound)
+            {
+                PlayerPrefs.SetString("CustomRoundTitle", "Extra Round!");
+                SceneManager.LoadScene("Gameplay_L");
+            }
+            else if (Input.anyKey && hasRoundEnded && roundIsDraw)
+            {
+                SceneManager.LoadScene("DrawTutorial");
+            }
         }
     }
 
     private void updateRoundValues()
     {
-        print(PlayerPrefs.GetString("isDraw"));
         if (PlayerPrefs.GetString("isDraw") == "true")
         {
             isDrawRound = true;
@@ -249,6 +255,7 @@ public class RoundHandler : MonoBehaviour
     {
         if (!hasRoundEnded)
         {
+            freezeControls = 2f;
             CompareScores();
             EliminateLoser();
             

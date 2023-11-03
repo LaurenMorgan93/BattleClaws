@@ -45,5 +45,18 @@ public class TimerScript : MonoBehaviour
              
         }
 
-    }
+        if (timeLeftInRound <= 10)
+        {
+            timerTextObject.color = Color.red;
+            if (timeLeftInRound % 1f >= 0.5f)
+            {
+                timerTextObject.gameObject.SetActive(false);
+            }
+            else
+            {
+                timerTextObject.gameObject.SetActive(true);
+            }
+        }
+
+ }
 }

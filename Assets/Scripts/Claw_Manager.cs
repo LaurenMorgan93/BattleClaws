@@ -5,7 +5,7 @@ public class Claw_Manager : MonoBehaviour
 {
     [SerializeField] public float buffCooldown;
     [SerializeField] private int grabCooldown;
-    public int clawMoveSpeed;
+    public float clawMoveSpeed;
     public bool doublePointsBuffActive;
     public GameObject parentObject;
     public RoundHandler scoreTrackingScript;
@@ -21,7 +21,7 @@ public class Claw_Manager : MonoBehaviour
     public float minX = -230f; // Set your minimum X position
     public float minZ = -100f; // Set your minimum Z position
     private GameObject CollectableObject;
-    private int defaultSpeed = 80;
+    private float defaultSpeed = 80;
     public GameObject heldObject;
     private bool isSpeedBuffed;
     public bool objectGrabbed;
@@ -37,6 +37,7 @@ public class Claw_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        defaultSpeed = clawMoveSpeed;
         // Find the Object tagged Player 
         playerOneClaw = gameObject;
         scoreUI = GameObject.FindGameObjectWithTag(playerIdentifier + " Score").GetComponent<TMP_Text>();
@@ -50,8 +51,8 @@ public class Claw_Manager : MonoBehaviour
         {
             minX = -330;
             maxX = 270;
-            maxZ = 175;
-            minZ = 175;
+            maxZ = 240;
+            minZ = 155;
         }
     }
 
@@ -133,14 +134,33 @@ public class Claw_Manager : MonoBehaviour
         if (other.gameObject.CompareTag("Wall")) Destroy(gameObject.GetComponent<FixedJoint>());
     }
 
+    public int clampMovement(float axisValue)
+    {
+        if (axisValue >= 0.7)
+        {
+            return 1;
+        }
+        if (axisValue <= -0.7)
+        {
+            return -1;
+        }
+
+        return 0;
+        
+    }
+
     public void moveClaw()
     {
+        if (grabCooldown > 0)
+        {
+            return;
+        }
         //This code gets the X and Z input and moves the Player object with it.
         //float Xmovement = Input.GetAxis("Hor_" + pName);
         
         
-        var Xmovement = Input.GetAxis("Hor_" + playerIdentifier) * isInverted;
-        var Ymovement = Input.GetAxis("Vert_" + playerIdentifier) * isInverted;
+        var Xmovement = clampMovement(Input.GetAxis("Vert_" + playerIdentifier));
+        var Ymovement = clampMovement(Input.GetAxis("Hor_" + playerIdentifier)* -1);
         //var Xmovement = Input.GetAxis("Horizontal");
         //var Ymovement = Input.GetAxis("Vertical");
         if (Mathf.Abs(Xmovement) <= 0.2 && Mathf.Abs(Ymovement) <= 0.2) return;
@@ -158,7 +178,7 @@ public class Claw_Manager : MonoBehaviour
     {
         
         // If the player presses the button, run the animation that makes the Claw drop down.
-        if (Input.GetKeyDown("joystick " + playerIdentifier[1] + " button 0"))
+        if (Input.GetKeyDown("joystick " + playerIdentifier[1] + " button 0") || Input.GetKeyDown(KeyCode.G))
         //if (Input.GetKeyDown(KeyCode.G))
         {
             
@@ -168,14 +188,15 @@ public class Claw_Manager : MonoBehaviour
                 playerOneAnim = playerOneClaw.GetComponent<Animator>();
                 playerOneAnim.SetTrigger("Grab");
                 clawModelAnimator.SetTrigger("open");
-                grabCooldown = 100;
+                grabCooldown = 160;
             }
             else if (objectGrabbed && heldObject)
             {
                 if (heldObject && scoreTrackingScript.isDrawRound)
                 {
                     heldObject.GetComponent<SpecialCollectable>().setHeld(false);
-                    
+                    clawMoveSpeed = defaultSpeed;
+
                 }
                 print("let go");
                 clawModelAnimator.SetTrigger("open");
@@ -217,7 +238,7 @@ public class Claw_Manager : MonoBehaviour
     {
         RaycastHit hit;
         
-        if (Physics.BoxCast(gameObject.transform.position + new Vector3(0,50,0), new Vector3(0.2f, 0.2f, 0.2f), Vector3.down * 1000f, out hit) &&
+        if (Physics.SphereCast(gameObject.transform.position + new Vector3(0,50,0), 1.5f, Vector3.down * 1000f, out hit) &&
             (hit.collider.CompareTag("Collectable") || hit.collider.CompareTag("MysteryBox")))
             return hit.collider.gameObject;
 
@@ -237,7 +258,8 @@ public class Claw_Manager : MonoBehaviour
                 {
                     specialScript.holdingPlayer = this.gameObject;
                     specialScript.setHeld(true);
-                    
+                    clawMoveSpeed *= 0.7f;
+
                 }
                 currentTarget.transform.SetParent(clawModel.transform);
                 currentTarget.GetComponent<Rigidbody>().useGravity = false;

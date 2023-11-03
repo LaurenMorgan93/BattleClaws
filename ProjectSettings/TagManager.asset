@@ -34,6 +34,8 @@ TagManager:
   - p3 Panel
   - p4 Panel
   - Anchor
+  - REPanel
+  - REText
   layers:
   - Default
   - TransparentFX
@@ -41,7 +43,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Glass
   - 
   - 
   - 

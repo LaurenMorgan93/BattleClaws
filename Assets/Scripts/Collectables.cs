@@ -36,9 +36,15 @@ public class Collectables : MonoBehaviour
     {
         if (other.CompareTag("WinZone"))
         {
-            if (other.gameObject.transform.parent.gameObject.name.Split(" ")[0] == gameObject.name.Split(" ")[0] && lastPlayer != null){
+            if (other.gameObject.transform.parent.gameObject.name.Split(" ")[0] == gameObject.name.Split(" ")[0] && lastPlayer != null && !other.gameObject.name.Contains("locked")){
                 lastPlayer.GetComponent<Claw_Manager>().addPoints(pointValue);
                 Debug.Log(lastPlayer.name + " gained " + pointValue + " points!");
+                other.gameObject.GetComponent<DropZoneHandler>().particles.Play();
+                var canvas = other.gameObject.GetComponentInChildren<Canvas>();
+                var text = canvas.GetComponentInChildren<TMP_Text>(true);
+                text.text = "+"+pointValue.ToString();
+                
+                other.gameObject.GetComponentInChildren<Animator>().SetTrigger("Points");
                 Destroy(gameObject);
             }
             

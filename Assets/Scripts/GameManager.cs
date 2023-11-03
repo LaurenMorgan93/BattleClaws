@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> collectablesPrefabs;
     public List<GameObject> powerUpsPrefabs;
 
+    public List<GameObject> ActivePlayerObjects;
+
     public List<GameObject> UIPanels;
     
     
@@ -73,7 +75,8 @@ public class GameManager : MonoBehaviour
             //Instantiate the Player Package prefab
             if (currentPlayerPackage != null)
             {
-                Instantiate(currentPlayerPackage, prefabAnchor.transform.position, Quaternion.identity);
+                var newplayer =Instantiate(currentPlayerPackage, prefabAnchor.transform.position, Quaternion.identity);
+                ActivePlayerObjects.Add(newplayer);
             }
         }
         
@@ -109,6 +112,14 @@ public class GameManager : MonoBehaviour
             usedDropZones.Add(currentRandomDropzone);
             Instantiate(dropZonePrefabs[currentRandomDropzone], anchor.transform.position, Quaternion.identity);
         }
+    }
+
+    public void lockRandomDropZone()
+    {
+        GameObject[] activeDropzones = GameObject.FindGameObjectsWithTag("DropZone");
+        GameObject randomDropzone = activeDropzones[Random.Range(0, activeDropzones.Length)];
+
+        randomDropzone.GetComponentInChildren<DropZoneHandler>().lockDropZone();
     }
 
     private void initCollectables(int amount)
