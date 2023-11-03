@@ -188,7 +188,7 @@ public class Claw_Manager : MonoBehaviour
                 playerOneAnim = playerOneClaw.GetComponent<Animator>();
                 playerOneAnim.SetTrigger("Grab");
                 clawModelAnimator.SetTrigger("open");
-                grabCooldown = 160;
+                grabCooldown = 100;
             }
             else if (objectGrabbed && heldObject)
             {

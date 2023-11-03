@@ -793,7 +793,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedBuffAmount: 100
   speedDebuffAmount: 25
-  frozenSpeed: 0
   PlayerManagerScript: {fileID: 0}
   lastPlayerGrab: {fileID: 0}
 --- !u!54 &142939215
@@ -9193,7 +9192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedBuffAmount: 100
   speedDebuffAmount: 25
-  frozenSpeed: 0
   PlayerManagerScript: {fileID: 0}
   lastPlayerGrab: {fileID: 0}
 --- !u!65 &799286854
@@ -10046,7 +10044,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedBuffAmount: 100
   speedDebuffAmount: 25
-  frozenSpeed: 0
   PlayerManagerScript: {fileID: 0}
   lastPlayerGrab: {fileID: 0}
 --- !u!65 &920153367
@@ -15213,7 +15210,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedBuffAmount: 100
   speedDebuffAmount: 25
-  frozenSpeed: 0
   PlayerManagerScript: {fileID: 0}
   lastPlayerGrab: {fileID: 0}
 --- !u!65 &1884899045
