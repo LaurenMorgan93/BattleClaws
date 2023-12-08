@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ReadySlider : MonoBehaviour
 {
@@ -12,8 +13,12 @@ public class ReadySlider : MonoBehaviour
 
     private void Start()
     {
-        // add a reference to Jess's player handover script
-        playerReadyScript = FindObjectOfType<PlayerHandover>();
+        if (SceneManager.GetActiveScene().name != "High_Score")
+        {
+            // add a reference to Jess's player handover script
+            playerReadyScript = FindObjectOfType<PlayerHandover>();
+        }
+
         // set the fillrate for the loading bar
         fillRate = 1.0f / requiredHoldTime;
         
@@ -83,5 +88,26 @@ public class ReadySlider : MonoBehaviour
     {
         // set the slider value to 0
         slider.value = 0;
+    }
+
+
+    private void closeHighScoreScreen()
+    {
+       
+        if (SceneManager.GetActiveScene().name == "High_Score" &&  isKeyHeld)
+        {
+            //when any key is held down, start filling the ready up bar
+            slider.value += fillRate * Time.deltaTime;
+            keyHeldTime += Time.deltaTime;
+            if(keyHeldTime >= requiredHoldTime)
+            {
+                SceneManager.LoadScene("Splash");
+            }
+
+            if (!isKeyHeld)
+            {
+                ResetSlider();
+            }
+        }
     }
 }
